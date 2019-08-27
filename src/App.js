@@ -7,7 +7,7 @@ import dummyTasks from './example-tasks.json';
 function App() {
   return (
     <div className="App">
-      <Project tasks={dummyTasks.tasks} />
+      <Project title={"ProjectM"} tasks={dummyTasks.tasks} />
     </div>
   );
 }
