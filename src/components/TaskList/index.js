@@ -35,6 +35,24 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+const Task = props => {
+  const classes = useStyles();
+
+  return (
+    <ListItem key={props.id}>
+      <Paper className={classes.paper}>
+        <Typography variant="h6">{props.name}</Typography>
+        <Typography variant="h6">Assigned To: {props.assignedTo}</Typography>
+        <ListItemSecondaryAction>
+          <IconButton className={classes.more} aria-label="settings">
+            <MoreVertIcon />
+          </IconButton>
+        </ListItemSecondaryAction>
+      </Paper>
+    </ListItem>
+  );
+};
+
 const TaskList = props => {
   const classes = useStyles();
 
@@ -43,17 +61,7 @@ const TaskList = props => {
       <Typography variant="h5">{props.label}</Typography>
       <List className={classes.list}>
         {props.tasks.map(t => (
-          <ListItem key={t.id}>
-            <Paper className={classes.paper}>
-              <Typography variant="h6">{t.name}</Typography>
-              <Typography variant="h6">Assigned To: {t.assignedTo}</Typography>
-              <ListItemSecondaryAction>
-                <IconButton className={classes.more} aria-label="settings">
-                  <MoreVertIcon />
-                </IconButton>
-              </ListItemSecondaryAction>
-            </Paper>
-          </ListItem>
+          <Task key={t.id} {...t} />
         ))}
       </List>
     </Paper>
