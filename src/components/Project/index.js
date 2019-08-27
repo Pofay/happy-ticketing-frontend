@@ -17,7 +17,17 @@ const Project = props => {
 
   return (
     <div className={classes.root}>
-      <TaskList label={labels[0]} tasks={tasks} />
+      <Grid container spacing={24}>
+        <Grid item xs={4}>
+          <TaskList label={labels[0]} tasks={tasks} />
+        </Grid>
+        <Grid item xs={4}>
+          <TaskList label={labels[1]} tasks={tasks} />
+        </Grid>
+        <Grid item xs={4}>
+          <TaskList label={labels[2]} tasks={tasks} />
+        </Grid>
+      </Grid>
     </div>
   );
 };
