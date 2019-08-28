@@ -1,15 +1,23 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-import Project from './components/Project';
+import Project from './pages/Project';
+import Index from './pages/Index';
 import dummyTasks from './example-tasks.json';
 
-function App() {
+// function App() {
+//   return (
+//     <div className="App">
+//       <Project title={"ProjectM"} tasks={dummyTasks.tasks} />
+//     </div>
+//   );
+// }
+
+const App = () => {
   return (
     <div className="App">
-      <Project title={"ProjectM"} tasks={dummyTasks.tasks} />
+      <Index />
     </div>
   );
-}
+};
 
 export default App;
