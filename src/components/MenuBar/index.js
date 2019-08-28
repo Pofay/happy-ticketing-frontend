@@ -35,9 +35,8 @@ const MenuBar = props => {
           <MenuIcon />
         </IconButton>
         <Typography variant="h6" className={classes.title}>
-          Project Title: {props.title}
+          {props.title}
         </Typography>
-        <Button color="inherit">Logout</Button>
       </Toolbar>
     </AppBar>
   );

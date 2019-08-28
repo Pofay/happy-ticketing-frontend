@@ -1,0 +1,22 @@
+{
+  "data": [
+    {
+      "id": 1,
+      "name": "ProjectM",
+      "href": "/v1/projects/1",
+      "methods": ["GET", "POST"]
+    },
+    {
+      "id": 2,
+      "name": "Scrabble Trainer",
+      "href": "/v1/projects/2",
+      "methods": ["GET", "POST"]
+    },
+    {
+      "id": 3,
+      "name": "Some Project",
+      "href": "/v1/projects/3",
+      "methods": ["GET", "POST"]
+    }
+  ]
+}
