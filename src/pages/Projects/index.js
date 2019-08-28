@@ -2,7 +2,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import MenuBar from '../../components/MenuBar';
 import { Grid, List, ListItem } from '@material-ui/core';
-import { withRouter, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import dummyProjects from '../../example-projects.json';
 
 const useStyles = makeStyles(theme => ({
