@@ -6,9 +6,11 @@ import {
   Paper,
   Typography,
   ListItemSecondaryAction,
+  Button,
   IconButton
 } from '@material-ui/core';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import AddIcon from '@material-ui/icons/Add';
 
 const useStyles = makeStyles(theme => ({
   list: {
@@ -32,6 +34,9 @@ const useStyles = makeStyles(theme => ({
   },
   more: {
     color: 'white'
+  },
+  addTask: {
+    width: '100%'
   }
 }));
 
@@ -64,6 +69,12 @@ const TaskList = props => {
           <Task key={t.id} {...t} />
         ))}
       </List>
+      <Paper>
+        <Button variant="contained" className={classes.addTask}>
+          <AddIcon />
+          Add New Ticket
+        </Button>
+      </Paper>
     </Paper>
   );
 };

@@ -1,7 +1,6 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-import Project from './components/Project';
+import Project from './pages/Project';
 import dummyTasks from './example-tasks.json';
 
 function App() {
