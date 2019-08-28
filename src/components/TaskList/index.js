@@ -58,6 +58,20 @@ const Task = props => {
   );
 };
 
+const AddTicketButton = props => {
+  const classes = useStyles();
+
+  return (
+    <Paper>
+      <Button variant="contained" className={classes.addTask}>
+        <AddIcon />
+        Add New Ticket
+      </Button>
+    </Paper>
+  );
+};
+
+// Props: Label, Tasks, OnClickAddTicket, OnClickMoreOptions
 const TaskList = props => {
   const classes = useStyles();
 
@@ -69,12 +83,7 @@ const TaskList = props => {
           <Task key={t.id} {...t} />
         ))}
       </List>
-      <Paper>
-        <Button variant="contained" className={classes.addTask}>
-          <AddIcon />
-          Add New Ticket
-        </Button>
-      </Paper>
+      <AddTicketButton />
     </Paper>
   );
 };
