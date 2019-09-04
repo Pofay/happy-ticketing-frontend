@@ -28,13 +28,22 @@ const Project = props => {
       <MenuBar title={props.title} />
       <Grid container spacing={16} className={classes.tasksContainer}>
         <Grid item xs={4}>
-          <TaskList label={labels[0]} tasks={tasks} />
+          <TaskList
+            label={labels[0]}
+            tasks={tasks.filter(t => t.status === labels[0])}
+          />
         </Grid>
         <Grid item xs={4}>
-          <TaskList label={labels[1]} tasks={tasks} />
+          <TaskList
+            label={labels[1]}
+            tasks={tasks.filter(t => t.status === labels[1])}
+          />
         </Grid>
         <Grid item xs={4}>
-          <TaskList label={labels[2]} tasks={tasks} />
+          <TaskList
+            label={labels[2]}
+            tasks={tasks.filter(t => t.status === labels[2])}
+          />
         </Grid>
       </Grid>
     </div>

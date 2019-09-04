@@ -1,0 +1,10 @@
+{
+  "data": [
+    {
+      "id": 1,
+      "name": "ProjectM",
+      "href": "/v1/projects/1",
+      "methods": ["GET", "POST"]
+    }
+  ]
+}
