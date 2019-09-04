@@ -4,6 +4,8 @@ import './index.css';
 import App from './App';
 import { Auth0Provider } from './components/auth0-wrapper';
 import * as serviceWorker from './serviceWorker';
+import { Provider as ReduxProvider } from 'react-redux';
+import createStore from './reduxConfig';
 
 const onRedirectCallback = appState => {
   window.history.replaceState(
@@ -23,7 +25,9 @@ ReactDOM.render(
     redirect_uri={window.location.origin}
     onRedirectCallback={onRedirectCallback}
   >
-    <App />
+    <ReduxProvider store={createStore()}>
+      <App />
+    </ReduxProvider>
   </Auth0Provider>,
   document.getElementById('root')
 );

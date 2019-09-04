@@ -1,6 +1,7 @@
 import React from 'react';
 import { Paper, Button, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import { Link } from 'react-router-dom';
 import { useAuth0 } from '../../components/auth0-wrapper';
 
 const useStyles = makeStyles(theme => ({
@@ -19,6 +20,10 @@ const useStyles = makeStyles(theme => ({
   },
   login: {
     marginTop: '2%'
+  },
+  projectLink: {
+    marginTop: '2%',
+    marginLeft: '0.75%'
   }
 }));
 
@@ -36,6 +41,9 @@ const LoggedInPrompt = props => {
         onClick={() => logout()}
       >
         Log out
+      </Button>
+      <Button className={classes.projectLink} variant="contained">
+        <Link to="/projects">Go to Projects</Link>
       </Button>
     </>
   );
