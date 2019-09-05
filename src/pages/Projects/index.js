@@ -7,6 +7,8 @@ import { Link } from 'react-router-dom';
 import { useAuth0 } from '../../components/auth0-wrapper';
 import { loadAllProjectsRequest } from './actions';
 import { withRouter } from 'react-router-dom';
+import getAllProjects from './reducers/selectors';
+import { pipe } from 'ramda';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -17,11 +19,15 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const mapStateToProps = state => ({
-  projects: state.projects.allIds.map(id => state.projects.byId[id])
+  projects: getAllProjects(state)
 });
 
 const mapDispatchToProps = dispatch => ({
-  loadAllProjectsRequest: token => dispatch(loadAllProjectsRequest(token))
+  loadAllProjectsRequest: token =>
+    pipe(
+      loadAllProjectsRequest,
+      dispatch
+    )(token)
 });
 
 const Projects = props => {
