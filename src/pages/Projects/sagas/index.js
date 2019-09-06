@@ -13,7 +13,6 @@ const fetchAllProjects = token =>
   }).then(r => r.json());
 
 export function* loadAllProjects(action) {
-  console.log('Stuff again');
   const { token } = action;
 
   const projects = yield call(() => fetchAllProjects(token));

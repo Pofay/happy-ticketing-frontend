@@ -1,10 +1,23 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import TaskList from '../../components/TaskList';
 import MenuBar from '../../components/MenuBar';
-import dummyTasks from '../../example-tasks.json';
+import { useAuth0 } from '../../components/auth0-wrapper';
 
+import { getAllTasks } from './reducers/selectors';
+import { loadProjectDetails } from './actions';
+
+const mapStateToProps = state => ({
+  tasks: projectId => getAllTasks(state).filter(t => t.projectId === projectId)
+});
+
+const mapDispatchToProps = dispatch => ({
+  requestLoadProject: (token, projectId) =>
+    dispatch(loadProjectDetails({ token, projectId }))
+});
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
@@ -19,9 +32,20 @@ const useStyles = makeStyles(theme => ({
 
 const Project = props => {
   const classes = useStyles();
+  const { getTokenSilently } = useAuth0();
+  const { match, requestLoadProject, tasks } = props;
+  const projectId = match.params.id;
 
   const labels = ['TO IMPLEMENT', 'PARTIAL', 'COMPLETE'];
-  const tasks = dummyTasks.tasks;
+
+  const loadProject = async () => {
+    const token = await getTokenSilently();
+    requestLoadProject(token, projectId);
+  };
+
+  useEffect(() => {
+    loadProject();
+  }, []);
 
   return (
     <div className={classes.root}>
@@ -30,19 +54,19 @@ const Project = props => {
         <Grid item xs={4}>
           <TaskList
             label={labels[0]}
-            tasks={tasks.filter(t => t.status === labels[0])}
+            tasks={tasks(projectId).filter(t => t.status === labels[0])}
           />
         </Grid>
         <Grid item xs={4}>
           <TaskList
             label={labels[1]}
-            tasks={tasks.filter(t => t.status === labels[1])}
+            tasks={tasks(projectId).filter(t => t.status === labels[1])}
           />
         </Grid>
         <Grid item xs={4}>
           <TaskList
             label={labels[2]}
-            tasks={tasks.filter(t => t.status === labels[2])}
+            tasks={tasks(projectId).filter(t => t.status === labels[2])}
           />
         </Grid>
       </Grid>
@@ -50,4 +74,9 @@ const Project = props => {
   );
 };
 
-export default Project;
+export default withRouter(
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )(Project)
+);
