@@ -1,5 +1,5 @@
 import { all, put, call } from 'redux-saga/effects';
-import { addProjectAction } from '../actions';
+import ProjectsPageActions from '../actions';
 import fetch from 'isomorphic-unfetch';
 
 const apiUrl = process.env.REACT_APP_BACKEND_URL + '/projects';
@@ -17,7 +17,7 @@ export function* loadAllProjects(action) {
 
   const projects = yield call(() => fetchAllProjects(token));
 
-  const actions = projects.data.map(p => put(addProjectAction(p)));
+  const actions = projects.data.map(p => put(ProjectsPageActions.addProjectAction(p)));
 
   yield all(actions);
 }
