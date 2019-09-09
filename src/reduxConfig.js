@@ -21,6 +21,10 @@ function* rootSaga() {
     takeLatest(
       'SUBMIT_TASK_REQUEST',
       DialogContainerSagas.submitTaskRequestSaga
+    ),
+    takeLatest(
+      'SUBMIT_PROJECT_REQUEST',
+      DialogContainerSagas.submitProjectRequestSaga
     )
   ]);
 }
