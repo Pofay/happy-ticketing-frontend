@@ -63,7 +63,11 @@ const AddTicketButton = props => {
 
   return (
     <Paper>
-      <Button variant="contained" className={classes.addTask}>
+      <Button
+        variant="contained"
+        className={classes.addTask}
+        onClick={props.onClick}
+      >
         <AddIcon />
         Add New Ticket
       </Button>
@@ -74,16 +78,22 @@ const AddTicketButton = props => {
 // Props: Label, Tasks, OnClickAddTicket, OnClickMoreOptions
 const TaskList = props => {
   const classes = useStyles();
+  const { onClickAddTask, label, tasks } = props;
+
+  const handleClick = event => {
+    event.preventDefault();
+    onClickAddTask(label);
+  };
 
   return (
     <Paper className={classes.container}>
-      <Typography variant="h5">{props.label}</Typography>
+      <Typography variant="h5">{label}</Typography>
       <List className={classes.list}>
-        {props.tasks.map(t => (
+        {tasks.map(t => (
           <Task key={t.id} {...t} />
         ))}
       </List>
-      <AddTicketButton />
+      <AddTicketButton onClick={handleClick} />
     </Paper>
   );
 };

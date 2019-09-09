@@ -5,6 +5,7 @@ import Project from './pages/Project';
 import Index from './pages/Index';
 import Projects from './pages/Projects';
 import PrivateRoute from './components/privateRoute';
+import DialogContainer from './containers/DialogContainer';
 
 const App = () => {
   return (
@@ -16,6 +17,7 @@ const App = () => {
           <PrivateRoute exact path="/projects/:id" component={Project} />
         </Switch>
       </BrowserRouter>
+      <DialogContainer />
     </div>
   );
 };

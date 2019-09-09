@@ -3,12 +3,14 @@ import { all, takeLatest } from 'redux-saga/effects';
 import { combineReducers, applyMiddleware, createStore } from 'redux';
 import projectsReducer from './pages/Projects/reducers';
 import tasksReducer from './pages/Project/reducers';
+import dialogContainerReducer from './containers/DialogContainer/reducers';
 import { loadAllProjects } from './pages/Projects/sagas';
 import { getProjectDetails } from './pages/Project/sagas';
 
 const reducers = combineReducers({
   projects: projectsReducer,
-  tasks: tasksReducer
+  tasks: tasksReducer,
+  openedDialog: dialogContainerReducer
 });
 
 function* rootSaga() {
