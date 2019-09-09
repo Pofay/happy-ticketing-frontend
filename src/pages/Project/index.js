@@ -18,9 +18,10 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   requestLoadProject: (token, projectId) =>
     dispatch(loadProjectDetails({ token, projectId })),
-  openAddTaskDialog: initialTaskStatus =>
-    dispatch(DialogActions.openAddTaskDialog(initialTaskStatus))
+  openAddTaskDialog: projectId => initialTaskStatus =>
+    dispatch(DialogActions.openAddTaskDialog({ initialTaskStatus, projectId }))
 });
+
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
@@ -58,21 +59,21 @@ const Project = props => {
           <TaskList
             label={labels[0]}
             tasks={tasks(projectId).filter(t => t.status === labels[0])}
-            onClickAddTask={openAddTaskDialog}
+            onClickAddTask={openAddTaskDialog(projectId)}
           />
         </Grid>
         <Grid item xs={4}>
           <TaskList
             label={labels[1]}
             tasks={tasks(projectId).filter(t => t.status === labels[1])}
-            onClickAddTask={openAddTaskDialog}
+            onClickAddTask={openAddTaskDialog(projectId)}
           />
         </Grid>
         <Grid item xs={4}>
           <TaskList
             label={labels[2]}
             tasks={tasks(projectId).filter(t => t.status === labels[2])}
-            onClickAddTask={openAddTaskDialog}
+            onClickAddTask={openAddTaskDialog(projectId)}
           />
         </Grid>
       </Grid>

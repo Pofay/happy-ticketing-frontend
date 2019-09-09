@@ -12,9 +12,19 @@ import {
   MenuItem
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import DialogContainerActions from './actions';
+import { useAuth0 } from '../../components/auth0-wrapper';
 
 const mapDispatchToProps = dispatch => ({
-  submitTask: (taskName, taskStatus) => {} // Action for submit task Saga
+  submitTask: (taskName, taskStatus, token, projectId) =>
+    dispatch(
+      DialogContainerActions.submitTaskRequest({
+        taskName,
+        taskStatus,
+        token,
+        projectId
+      })
+    )
 });
 
 const mapStateToProps = state => ({
@@ -33,7 +43,8 @@ const useStyles = makeStyles(theme => ({
 
 const AddTaskDialog = props => {
   const classes = useStyles();
-  const initialTaskStatus = props.dialogData;
+  const { getTokenSilently } = useAuth0();
+  const { initialTaskStatus, projectId } = props.dialogData;
   const [values, setValues] = useState({
     taskName: '',
     taskStatus: initialTaskStatus
@@ -43,15 +54,16 @@ const AddTaskDialog = props => {
     setValues({ ...values, [name]: event.target.value });
 
   const handleClose = event => {
-    event.preventDefault();
     setValues({ taskName: '', taskStatus: '' });
     props.onClose();
   };
 
   const handleSubmit = event => {
-    event.preventDefault();
-    props.submitTask(values.taskName, values.taskStatus);
-    handleClose(event);
+    getTokenSilently()
+      .then(token =>
+        props.submitTask(values.taskName, values.taskStatus, token, projectId)
+      )
+      .then(() => handleClose(event));
   };
 
   return (

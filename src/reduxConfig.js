@@ -6,6 +6,7 @@ import tasksReducer from './pages/Project/reducers';
 import dialogContainerReducer from './containers/DialogContainer/reducers';
 import { loadAllProjects } from './pages/Projects/sagas';
 import { getProjectDetails } from './pages/Project/sagas';
+import DialogContainerSagas from './containers/DialogContainer/sagas';
 
 const reducers = combineReducers({
   projects: projectsReducer,
@@ -16,7 +17,11 @@ const reducers = combineReducers({
 function* rootSaga() {
   yield all([
     takeLatest('LOAD_ALL_PROJECTS_REQUEST', loadAllProjects),
-    takeLatest('LOAD_PROJECT_DETAILS', getProjectDetails)
+    takeLatest('LOAD_PROJECT_DETAILS', getProjectDetails),
+    takeLatest(
+      'SUBMIT_TASK_REQUEST',
+      DialogContainerSagas.submitTaskRequestSaga
+    )
   ]);
 }
 
