@@ -6,6 +6,7 @@ import { withRouter } from 'react-router-dom';
 import TaskList from '../../components/TaskList';
 import MenuBar from '../../components/MenuBar';
 import { useAuth0 } from '../../components/auth0-wrapper';
+import DialogActions from '../../containers/DialogContainer/actions';
 
 import { getAllTasks } from './reducers/selectors';
 import { loadProjectDetails } from './actions';
@@ -16,8 +17,11 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   requestLoadProject: (token, projectId) =>
-    dispatch(loadProjectDetails({ token, projectId }))
+    dispatch(loadProjectDetails({ token, projectId })),
+  openAddTaskDialog: projectId => initialTaskStatus =>
+    dispatch(DialogActions.openAddTaskDialog({ initialTaskStatus, projectId }))
 });
+
 const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
@@ -33,7 +37,7 @@ const useStyles = makeStyles(theme => ({
 const Project = props => {
   const classes = useStyles();
   const { getTokenSilently } = useAuth0();
-  const { match, requestLoadProject, tasks } = props;
+  const { openAddTaskDialog, match, requestLoadProject, tasks } = props;
   const projectId = match.params.id;
 
   const labels = ['TO IMPLEMENT', 'PARTIAL', 'COMPLETE'];
@@ -55,18 +59,21 @@ const Project = props => {
           <TaskList
             label={labels[0]}
             tasks={tasks(projectId).filter(t => t.status === labels[0])}
+            onClickAddTask={openAddTaskDialog(projectId)}
           />
         </Grid>
         <Grid item xs={4}>
           <TaskList
             label={labels[1]}
             tasks={tasks(projectId).filter(t => t.status === labels[1])}
+            onClickAddTask={openAddTaskDialog(projectId)}
           />
         </Grid>
         <Grid item xs={4}>
           <TaskList
             label={labels[2]}
             tasks={tasks(projectId).filter(t => t.status === labels[2])}
+            onClickAddTask={openAddTaskDialog(projectId)}
           />
         </Grid>
       </Grid>

@@ -2,12 +2,13 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
 import MenuBar from '../../components/MenuBar';
-import { Grid, List, ListItem } from '@material-ui/core';
+import { Button, Grid, List, ListItem } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { useAuth0 } from '../../components/auth0-wrapper';
-import { loadAllProjectsRequest } from './actions';
+import ProjectsPageActions from './actions';
 import { withRouter } from 'react-router-dom';
 import getAllProjects from './reducers/selectors';
+import DialogContainerActions from '../../containers/DialogContainer/actions';
 import { pipe } from 'ramda';
 
 const useStyles = makeStyles(theme => ({
@@ -25,19 +26,25 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   loadAllProjectsRequest: token =>
     pipe(
-      loadAllProjectsRequest,
+      ProjectsPageActions.loadAllProjectsRequest,
       dispatch
-    )(token)
+    )(token),
+  openAddProjectDialog: () =>
+    dispatch(DialogContainerActions.openAddProjectDialog)
 });
 
 const Projects = props => {
   const classes = useStyles();
-  const { projects, loadAllProjectsRequest } = props;
+  const { openAddProjectDialog, projects, loadAllProjectsRequest } = props;
   const { getTokenSilently } = useAuth0();
 
   const loadProjects = async () => {
     const token = await getTokenSilently();
     loadAllProjectsRequest(token);
+  };
+
+  const handleClick = event => {
+    openAddProjectDialog();
   };
 
   useEffect(() => {
@@ -49,6 +56,9 @@ const Projects = props => {
       <MenuBar title={'Projects Page'} />
       <Grid container spacing={10}>
         <Grid item>
+          <Button variant="contained" color="primary" onClick={handleClick}>
+            Create New Project
+          </Button>
           <List component="nav">
             {projects.map(p => (
               <ListItem key={p.id}>

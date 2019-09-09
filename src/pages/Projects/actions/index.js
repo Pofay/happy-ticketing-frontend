@@ -1,13 +1,7 @@
-import { schema, normalize } from 'normalizr';
+import { addProjectAction } from './addProjectAction';
+import { loadAllProjectsRequest } from './loadAllProjectsRequest'
 
-const projects = new schema.Entity('projects');
-
-export const addProjectAction = data => ({
-  type: 'ADD_PROJECT',
-  payload: normalize(data, projects)
-});
-
-export const loadAllProjectsRequest = token => ({
-  type: 'LOAD_ALL_PROJECTS_REQUEST',
-  token: token
-});
+export default {
+  addProjectAction,
+  loadAllProjectsRequest
+}
