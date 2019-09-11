@@ -12,7 +12,8 @@ import { getAllTasks } from './reducers/selectors';
 import { loadProjectDetails } from './actions';
 
 const mapStateToProps = state => ({
-  tasks: projectId => getAllTasks(state).filter(t => t.projectId === projectId)
+  tasks: projectId => getAllTasks(state).filter(t => t.projectId === projectId),
+  title: projectId => state.projects.byId[projectId].title
 });
 
 const mapDispatchToProps = dispatch => ({
