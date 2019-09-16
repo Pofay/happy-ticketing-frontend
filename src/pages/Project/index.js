@@ -13,7 +13,7 @@ import { loadProjectDetails } from './actions';
 
 const mapStateToProps = state => ({
   tasks: projectId => getAllTasks(state).filter(t => t.projectId === projectId),
-  title: projectId => state.projects.byId[projectId].title
+  getProjectNameFrom: projectId => state.projects.byId[projectId].name
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -38,7 +38,7 @@ const useStyles = makeStyles(theme => ({
 const Project = props => {
   const classes = useStyles();
   const { getTokenSilently } = useAuth0();
-  const { openAddTaskDialog, match, requestLoadProject, tasks } = props;
+  const { openAddTaskDialog, match, requestLoadProject, tasks, getProjectNameFrom } = props;
   const projectId = match.params.id;
 
   const labels = ['TO IMPLEMENT', 'PARTIAL', 'COMPLETE'];
@@ -54,7 +54,7 @@ const Project = props => {
 
   return (
     <div className={classes.root}>
-      <MenuBar title={props.title} />
+      <MenuBar title={getProjectNameFrom(projectId)} />
       <Grid container spacing={16} className={classes.tasksContainer}>
         <Grid item xs={4}>
           <TaskList
