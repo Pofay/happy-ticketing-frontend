@@ -17,7 +17,9 @@ export function* loadAllProjects(action) {
 
   const projects = yield call(() => fetchAllProjects(token));
 
-  const actions = projects.data.map(p => put(ProjectsPageActions.addProjectAction(p)));
+  const actions = projects.data.map(p =>
+    put(ProjectsPageActions.addProjectAction(p))
+  );
 
   yield all(actions);
 }

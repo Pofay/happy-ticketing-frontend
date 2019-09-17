@@ -9,18 +9,27 @@ import { useAuth0 } from '../../components/auth0-wrapper';
 import DialogActions from '../../containers/DialogContainer/actions';
 
 import { getAllTasks } from './reducers/selectors';
-import { loadProjectDetails } from './actions';
+import { loadProjectDetails, subscribeToProject } from './actions';
 
 const mapStateToProps = state => ({
-  tasks: projectId => getAllTasks(state).filter(t => t.projectId === projectId),
-  getProjectNameFrom: projectId => state.projects.byId[projectId].name
+  getTasks: projectId =>
+    getAllTasks(state).filter(t => t.projectId === projectId),
+  getName: projectId => state.projects.byId[projectId].name,
+  getChannelName: projectId => state.projects.byId[projectId].channelName
 });
 
 const mapDispatchToProps = dispatch => ({
   requestLoadProject: (token, projectId) =>
     dispatch(loadProjectDetails({ token, projectId })),
   openAddTaskDialog: projectId => initialTaskStatus =>
-    dispatch(DialogActions.openAddTaskDialog({ initialTaskStatus, projectId }))
+    dispatch(DialogActions.openAddTaskDialog({ initialTaskStatus, projectId })),
+  subscribeToChanges: (channelName, projectId) =>
+    dispatch(
+      subscribeToProject({
+        channelName,
+        projectId
+      })
+    )
 });
 
 const useStyles = makeStyles(theme => ({
@@ -38,7 +47,15 @@ const useStyles = makeStyles(theme => ({
 const Project = props => {
   const classes = useStyles();
   const { getTokenSilently } = useAuth0();
-  const { openAddTaskDialog, match, requestLoadProject, tasks, getProjectNameFrom } = props;
+  const {
+    openAddTaskDialog,
+    match,
+    requestLoadProject,
+    getTasks,
+    getName,
+    getChannelName,
+    subscribeToChanges
+  } = props;
   const projectId = match.params.id;
 
   const labels = ['TO IMPLEMENT', 'PARTIAL', 'COMPLETE'];
@@ -50,30 +67,31 @@ const Project = props => {
 
   useEffect(() => {
     loadProject();
+    subscribeToChanges(getChannelName(projectId), projectId);
   }, []);
 
   return (
     <div className={classes.root}>
-      <MenuBar title={getProjectNameFrom(projectId)} />
+      <MenuBar title={getName(projectId)} />
       <Grid container spacing={16} className={classes.tasksContainer}>
         <Grid item xs={4}>
           <TaskList
             label={labels[0]}
-            tasks={tasks(projectId).filter(t => t.status === labels[0])}
+            tasks={getTasks(projectId).filter(t => t.status === labels[0])}
             onClickAddTask={openAddTaskDialog(projectId)}
           />
         </Grid>
         <Grid item xs={4}>
           <TaskList
             label={labels[1]}
-            tasks={tasks(projectId).filter(t => t.status === labels[1])}
+            tasks={getTasks(projectId).filter(t => t.status === labels[1])}
             onClickAddTask={openAddTaskDialog(projectId)}
           />
         </Grid>
         <Grid item xs={4}>
           <TaskList
             label={labels[2]}
-            tasks={tasks(projectId).filter(t => t.status === labels[2])}
+            tasks={getTasks(projectId).filter(t => t.status === labels[2])}
             onClickAddTask={openAddTaskDialog(projectId)}
           />
         </Grid>
