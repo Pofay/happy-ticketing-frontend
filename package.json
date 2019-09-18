@@ -8,6 +8,7 @@
     "@material-ui/icons": "^4.2.1",
     "isomorphic-unfetch": "^3.0.0",
     "normalizr": "^3.4.1",
+    "pusher-js": "^5.0.1",
     "ramda": "^0.26.1",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",

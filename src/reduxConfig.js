@@ -4,8 +4,10 @@ import { combineReducers, applyMiddleware, createStore } from 'redux';
 import projectsReducer from './pages/Projects/reducers';
 import tasksReducer from './pages/Project/reducers';
 import dialogContainerReducer from './containers/DialogContainer/reducers';
-import { loadAllProjects } from './pages/Projects/sagas';
-import { getProjectDetails } from './pages/Project/sagas';
+import {
+  loadAllProjects
+} from './pages/Projects/sagas';
+import { getProjectDetails, initializeSubscriptionToProject } from './pages/Project/sagas';
 import DialogContainerSagas from './containers/DialogContainer/sagas';
 
 const reducers = combineReducers({
@@ -25,7 +27,8 @@ function* rootSaga() {
     takeLatest(
       'SUBMIT_PROJECT_REQUEST',
       DialogContainerSagas.submitProjectRequestSaga
-    )
+    ),
+    takeLatest('SUBSCRIBE_TO_PROJECT', initializeSubscriptionToProject)
   ]);
 }
 
