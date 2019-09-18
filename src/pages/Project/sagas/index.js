@@ -47,7 +47,7 @@ function* subscribeToProjectChanges(channelName, projectId) {
   yield takeEvery(projectChanges, function*(action) {
     switch (action.type) {
       case 'task-added':
-        yield mergeWithAddTask(projectId);
+        yield mergeWithAddTask(projectId)(action.payload);
         break;
       default:
         break;
@@ -58,14 +58,14 @@ function* subscribeToProjectChanges(channelName, projectId) {
   projectChanges.close();
 }
 
-const createProjectChangesChannel = channelName =>
-  eventChannel(emitter => {
+const createProjectChangesChannel = channelName => {
+  return eventChannel(emitter => {
     const channel = PusherService.subscribe(channelName);
 
-    channel.bind('task-added', function(task) {
+    channel.bind('task-added', function(data) {
       emitter({
         type: 'task-added',
-        payload: task
+        payload: data
       });
     });
 
@@ -74,3 +74,4 @@ const createProjectChangesChannel = channelName =>
       PusherService.unsubscribe();
     };
   });
+};

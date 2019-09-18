@@ -9,7 +9,11 @@ import { useAuth0 } from '../../components/auth0-wrapper';
 import DialogActions from '../../containers/DialogContainer/actions';
 
 import { getAllTasks } from './reducers/selectors';
-import { loadProjectDetails, subscribeToProject } from './actions';
+import {
+  loadProjectDetails,
+  subscribeToProject,
+  unsubscribeToProject
+} from './actions';
 
 const mapStateToProps = state => ({
   getTasks: projectId =>
@@ -29,7 +33,8 @@ const mapDispatchToProps = dispatch => ({
         channelName,
         projectId
       })
-    )
+    ),
+  unsubscribeToChanges: () => dispatch(unsubscribeToProject)
 });
 
 const useStyles = makeStyles(theme => ({
@@ -54,7 +59,8 @@ const Project = props => {
     getTasks,
     getName,
     getChannelName,
-    subscribeToChanges
+    subscribeToChanges,
+    unsubscribeToChanges
   } = props;
   const projectId = match.params.id;
 
@@ -68,6 +74,7 @@ const Project = props => {
   useEffect(() => {
     loadProject();
     subscribeToChanges(getChannelName(projectId), projectId);
+    return unsubscribeToChanges;
   }, []);
 
   return (

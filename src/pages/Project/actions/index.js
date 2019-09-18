@@ -17,3 +17,7 @@ export const subscribeToProject = payload => ({
   type: 'SUBSCRIBE_TO_PROJECT',
   payload: payload
 });
+
+export const unsubscribeToProject = {
+  type: 'UNSUBSCRIBE_TO_PROJECT'
+};
