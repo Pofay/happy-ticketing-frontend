@@ -1,53 +1,27 @@
-import { take, call, all, put, fork, takeEvery } from 'redux-saga/effects';
+import { take, put, fork, takeEvery } from 'redux-saga/effects';
 import { eventChannel } from 'redux-saga';
-import fetch from 'isomorphic-unfetch';
-import { pipe, merge } from 'ramda';
-import { addTask } from '../actions';
+import { pipe } from 'ramda';
+import addTask from '../../globalActions/addTask';
 import PusherService from '../services/pusherService';
 
-const apiUrl = projectId =>
-  `${process.env.REACT_APP_BACKEND_URL}/projects/${projectId}`;
-
-const mergeWithAddTask = projectId =>
-  pipe(
-    merge({ projectId }),
-    addTask,
-    put
-  );
-
-const fetchProjectDetails = (token, projectId) =>
-  fetch(apiUrl(projectId), {
-    method: 'GET',
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-  }).then(r => r.json());
-
-export function* getProjectDetails(action) {
-  const { projectId, token } = action.payload;
-
-  const project = yield call(() => fetchProjectDetails(token, projectId));
-
-  // Should refactor to pointfree style
-  const actions = project.tasks.map(mergeWithAddTask(projectId));
-
-  // Still need to get some members
-  yield all(actions);
-}
+const putTaskToStore = pipe(
+  addTask,
+  put
+);
 
 export function* initializeSubscriptionToProject(action) {
-  const { channelName, projectId } = action.payload;
+  const channelName = action.payload;
 
-  yield fork(subscribeToProjectChanges, channelName, projectId);
+  yield fork(subscribeToProjectChanges, channelName);
 }
 
-function* subscribeToProjectChanges(channelName, projectId) {
+function* subscribeToProjectChanges(channelName) {
   const projectChanges = createProjectChangesChannel(channelName);
 
   yield takeEvery(projectChanges, function*(action) {
     switch (action.type) {
       case 'task-added':
-        yield mergeWithAddTask(projectId)(action.payload);
+        yield putTaskToStore(action.payload);
         break;
       default:
         break;

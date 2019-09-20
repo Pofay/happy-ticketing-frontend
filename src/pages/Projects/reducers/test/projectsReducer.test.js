@@ -2,7 +2,6 @@ import reducer from '../index';
 import exampleResponse from './exampleResponse.json';
 import ProjectsActions from '../../actions';
 import addTask from '../../../globalActions/addTask';
-import { pipe } from 'ramda';
 
 it('Returns Initial State', () => {
   const expected = {

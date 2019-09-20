@@ -5,9 +5,9 @@ export const loadProjectDetails = data => ({
   payload: data
 });
 
-export const subscribeToProject = payload => ({
+export const subscribeToProject = channelName => ({
   type: 'SUBSCRIBE_TO_PROJECT',
-  payload: payload
+  payload: channelName
 });
 
 export const unsubscribeToProject = {

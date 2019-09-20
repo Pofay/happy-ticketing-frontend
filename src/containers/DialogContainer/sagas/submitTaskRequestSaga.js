@@ -15,8 +15,6 @@ const createNewTask = (token, projectId, body) =>
   }).then(r => r.json());
 
 export function* submitTaskRequestSaga(action) {
-  // post to API url
-
   const { taskName, taskStatus, token, projectId } = action.payload;
 
   yield call(() =>
