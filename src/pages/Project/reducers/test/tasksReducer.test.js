@@ -1,6 +1,7 @@
 import reducer from '../index';
-import response from './example-response.json';
-import { addTask } from '../../actions';
+import response from './exampleResponse.json';
+import addProjectAction from '../../../globalActions/addProjectAction';
+import addTask from '../../../globalActions/addTask';
 
 it('Should return initial State', () => {
   const expected = {
@@ -13,24 +14,49 @@ it('Should return initial State', () => {
   expect(actual).toEqual(expected);
 });
 
-it('Should add Project Id to Tasks', () => {
+it('Should commit tasks from adding a project', () => {
+  const { data } = response;
+  const project = data[0];
   const expected = {
     byId: {
-      '1': {
-        id: 1,
+      '41e11bed-1244-4142-a3bf-ada37906fc4e': {
+        id: '41e11bed-1244-4142-a3bf-ada37906fc4e',
         name: 'Task name',
-        projectId: 1,
         status: 'TO IMPLEMENT',
         assignedTo: 'pofay@example.com'
       }
     },
-    allIds: [1]
+    allIds: ['41e11bed-1244-4142-a3bf-ada37906fc4e']
   };
 
-  const actual = reducer(
-    undefined,
-    addTask({ ...response.tasks[0], projectId: response.id })
-  );
+  const actual = reducer(undefined, addProjectAction(project));
+
+  expect(actual).toEqual(expected);
+});
+
+it('Can add plain tasks to state', () => {
+  const response = {
+    id: '12345df-234123',
+    name: 'Make DB',
+    projectId: 1,
+    assignedTo: 'pofay@example.com',
+    status: 'TO IMPLEMENT'
+  };
+
+  const expected = {
+    byId: {
+      '12345df-234123': {
+        id: '12345df-234123',
+        name: 'Make DB',
+        projectId: 1,
+        assignedTo: 'pofay@example.com',
+        status: 'TO IMPLEMENT'
+      }
+    },
+    allIds: ['12345df-234123']
+  };
+
+  const actual = reducer(undefined, addTask(response));
 
   expect(actual).toEqual(expected);
 });

@@ -7,7 +7,9 @@ const projects = new schema.Entity('projects', {
   members: [member]
 })
 
-export const addProjectAction = data => ({
+const addProjectAction = data => ({
   type: 'ADD_PROJECT',
   payload: normalize(data, projects)
 });
+
+export default addProjectAction
