@@ -3,8 +3,25 @@
     {
       "id": 1,
       "name": "ProjectM",
-      "href": "/v1/projects/1",
-      "methods": ["GET", "POST"]
+      "members": [
+        {
+          "id": 1,
+          "email": "pofay@example.com"
+        },
+        {
+          "id": 2,
+          "email": "pofire@example.com"
+        }
+      ],
+      "tasks": [
+        {
+          "id": "41e11bed-1244-4142-a3bf-ada37906fc4e",
+          "name": "Task name",
+          "status": "TO IMPLEMENT",
+          "assignedTo": "pofay@example.com"
+        }
+      ],
+      "channelName": "213242134@ProjectM"
     }
   ]
 }
