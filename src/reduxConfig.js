@@ -4,10 +4,11 @@ import { combineReducers, applyMiddleware, createStore } from 'redux';
 import projectsReducer from './pages/Projects/reducers';
 import tasksReducer from './pages/Project/reducers';
 import dialogContainerReducer from './containers/DialogContainer/reducers';
+import { loadAllProjects } from './pages/Projects/sagas';
 import {
-  loadAllProjects
-} from './pages/Projects/sagas';
-import { getProjectDetails, initializeSubscriptionToProject } from './pages/Project/sagas';
+  getProjectDetails,
+  initializeSubscriptionToProject
+} from './pages/Project/sagas';
 import DialogContainerSagas from './containers/DialogContainer/sagas';
 
 const reducers = combineReducers({
@@ -19,7 +20,6 @@ const reducers = combineReducers({
 function* rootSaga() {
   yield all([
     takeLatest('LOAD_ALL_PROJECTS_REQUEST', loadAllProjects),
-    takeLatest('LOAD_PROJECT_DETAILS', getProjectDetails),
     takeLatest(
       'SUBMIT_TASK_REQUEST',
       DialogContainerSagas.submitTaskRequestSaga

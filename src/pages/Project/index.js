@@ -5,35 +5,21 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import TaskList from '../../components/TaskList';
 import MenuBar from '../../components/MenuBar';
-import { useAuth0 } from '../../components/auth0-wrapper';
 import DialogActions from '../../containers/DialogContainer/actions';
 
-import { getAllTasks } from './reducers/selectors';
+import { makeMapStateToProps } from './reducers/selectors';
 import {
   loadProjectDetails,
   subscribeToProject,
   unsubscribeToProject
 } from './actions';
 
-const mapStateToProps = state => ({
-  getTasks: projectId =>
-    getAllTasks(state).filter(t => t.projectId === projectId),
-  getName: projectId => state.projects.byId[projectId].name,
-  getChannelName: projectId => state.projects.byId[projectId].channelName
-});
-
 const mapDispatchToProps = dispatch => ({
   requestLoadProject: (token, projectId) =>
     dispatch(loadProjectDetails({ token, projectId })),
   openAddTaskDialog: projectId => initialTaskStatus =>
     dispatch(DialogActions.openAddTaskDialog({ initialTaskStatus, projectId })),
-  subscribeToChanges: (channelName, projectId) =>
-    dispatch(
-      subscribeToProject({
-        channelName,
-        projectId
-      })
-    ),
+  subscribeToChanges: channelName => dispatch(subscribeToProject(channelName)),
   unsubscribeToChanges: () => dispatch(unsubscribeToProject)
 });
 
@@ -51,14 +37,12 @@ const useStyles = makeStyles(theme => ({
 
 const Project = props => {
   const classes = useStyles();
-  const { getTokenSilently } = useAuth0();
   const {
-    openAddTaskDialog,
     match,
-    requestLoadProject,
-    getTasks,
-    getName,
-    getChannelName,
+    openAddTaskDialog,
+    channelName,
+    name,
+    tasks,
     subscribeToChanges,
     unsubscribeToChanges
   } = props;
@@ -66,39 +50,33 @@ const Project = props => {
 
   const labels = ['TO IMPLEMENT', 'PARTIAL', 'COMPLETE'];
 
-  const loadProject = async () => {
-    const token = await getTokenSilently();
-    requestLoadProject(token, projectId);
-  };
-
   useEffect(() => {
-    loadProject();
-    subscribeToChanges(getChannelName(projectId), projectId);
+    subscribeToChanges(channelName);
     return unsubscribeToChanges;
   }, []);
 
   return (
     <div className={classes.root}>
-      <MenuBar title={getName(projectId)} />
+      <MenuBar title={name} />
       <Grid container spacing={16} className={classes.tasksContainer}>
         <Grid item xs={4}>
           <TaskList
             label={labels[0]}
-            tasks={getTasks(projectId).filter(t => t.status === labels[0])}
+            tasks={tasks.filter(t => t.status === labels[0])}
             onClickAddTask={openAddTaskDialog(projectId)}
           />
         </Grid>
         <Grid item xs={4}>
           <TaskList
             label={labels[1]}
-            tasks={getTasks(projectId).filter(t => t.status === labels[1])}
+            tasks={tasks.filter(t => t.status === labels[1])}
             onClickAddTask={openAddTaskDialog(projectId)}
           />
         </Grid>
         <Grid item xs={4}>
           <TaskList
             label={labels[2]}
-            tasks={getTasks(projectId).filter(t => t.status === labels[2])}
+            tasks={tasks.filter(t => t.status === labels[2])}
             onClickAddTask={openAddTaskDialog(projectId)}
           />
         </Grid>
@@ -109,7 +87,7 @@ const Project = props => {
 
 export default withRouter(
   connect(
-    mapStateToProps,
+    makeMapStateToProps(),
     mapDispatchToProps
   )(Project)
 );
