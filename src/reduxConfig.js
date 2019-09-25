@@ -5,10 +5,7 @@ import projectsReducer from './pages/Projects/reducers';
 import tasksReducer from './pages/Project/reducers';
 import dialogContainerReducer from './containers/DialogContainer/reducers';
 import { loadAllProjects } from './pages/Projects/sagas';
-import {
-  getProjectDetails,
-  initializeSubscriptionToProject
-} from './pages/Project/sagas';
+import { initializeSubscriptionToProject } from './pages/Project/sagas';
 import DialogContainerSagas from './containers/DialogContainer/sagas';
 
 const reducers = combineReducers({
