@@ -24,9 +24,9 @@ const addTasks = (state, action) => {
 const appendTaskIds = (state, action) => {
   const id = action.payload.result;
   const project = action.payload.entities.projects[id];
-  const { tasks } = project;
-  const taskIds = state.concat(tasks);
-  return [...new Set(taskIds)];
+  const taskIds = project.tasks;
+  const updateTaskIds = state.concat(taskIds);
+  return [...new Set(updateTaskIds)];
 };
 
 const appendTaskId = (state, action) => {

@@ -7,10 +7,12 @@ import dialogContainerReducer from './containers/DialogContainer/reducers';
 import { loadAllProjects } from './pages/Projects/sagas';
 import { initializeSubscriptionToProject } from './pages/Project/sagas';
 import DialogContainerSagas from './containers/DialogContainer/sagas';
+import membersReducer from './pages/globalReducers/membersReducer';
 
 const reducers = combineReducers({
   projects: projectsReducer,
   tasks: tasksReducer,
+  members: membersReducer,
   openedDialog: dialogContainerReducer
 });
 

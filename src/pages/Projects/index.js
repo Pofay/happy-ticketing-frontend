@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
+import { head } from 'ramda';
 import MenuBar from '../../components/MenuBar';
 import {
   Button,
@@ -8,12 +9,11 @@ import {
   List,
   ListItem,
   Card,
-  Paper,
   CardContent,
   Divider,
   Typography,
-  GridList,
-  GridListTile
+  Tooltip,
+  Avatar
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { useAuth0 } from '../../components/auth0-wrapper';
@@ -41,7 +41,8 @@ const useStyles = makeStyles(theme => ({
 
 const mapStateToProps = state => ({
   projects: getAllProjects(state),
-  tasks: taskIds => taskIds.map(id => state.tasks.byId[id])
+  tasks: taskIds => taskIds.map(id => state.tasks.byId[id]),
+  members: memberIds => memberIds.map(id => state.members.byId[id])
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -59,6 +60,7 @@ const Projects = props => {
   const {
     projects,
     tasks,
+    members,
     openAddProjectDialog,
     loadAllProjectsRequest
   } = props;
@@ -94,11 +96,31 @@ const Projects = props => {
                       <Typography variant="h5" component="h1">
                         <Link to={`projects/${p.id}`}>{p.name}</Link>
                       </Typography>
+                      <br />
                       <Divider />
+                      <br />
                       <Typography variant="h5" component="h2">
                         Members
                       </Typography>
+                      <Grid container spacing={2}>
+                        <Grid item xs={6}>
+                          <Grid
+                            container
+                            justify="center"
+                            alignItems="center"
+                            spacing={4}
+                          >
+                            {members(p.members).map(m => (
+                              <Tooltip key={m.id} title={m.email}>
+                                <Avatar>{head(m.email).toUpperCase()}</Avatar>
+                              </Tooltip>
+                            ))}
+                          </Grid>
+                        </Grid>
+                      </Grid>
+                      <br />
                       <Divider />
+                      <br />
                       <ProjectSummary
                         tasks={tasks(p.tasks).filter(
                           t => t.status === 'TO IMPLEMENT'

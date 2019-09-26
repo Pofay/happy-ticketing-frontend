@@ -19,7 +19,7 @@ const ProjectSummary = props => {
       <Typography variant="h6" component="h6">
         {statusTitle}
       </Typography>
-      <GridList cellHeight={40}>
+      <GridList cellHeight={40} cols={3}>
         {tasks.map(t => (
           <GridListTile key={t.id} className={classes.tile}>
             <Paper component="div" style={showStatus(t.status)}>
