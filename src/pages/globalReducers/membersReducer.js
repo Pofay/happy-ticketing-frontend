@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { merge } from 'ramda';
+import { merge, contains } from 'ramda';
 
 const arrayToObject = (array, keyField) =>
   array.reduce((obj, item) => {
@@ -16,10 +16,17 @@ const addMembers = (state, action) => {
   return merge(state, arrayToObject(membersToBeAdded, 'id'));
 };
 
+const addMember = (state, action) => {
+  const { id } = action.payload;
+  return merge(state, { [id]: action.payload });
+};
+
 const memberById = (state = {}, action) => {
   switch (action.type) {
     case 'ADD_PROJECT':
       return addMembers(state, action);
+    case 'ADD_MEMBER':
+      return addMember(state, action);
     default:
       return state;
   }
@@ -33,10 +40,17 @@ const appendIds = (state, action) => {
   return [...new Set(updatedMemberIds)];
 };
 
+const appendId = (state, action) => {
+  const { id } = action.payload;
+  return contains(id, state) ? state : state.concat(id);
+};
+
 const allMembers = (state = [], action) => {
   switch (action.type) {
     case 'ADD_PROJECT':
       return appendIds(state, action);
+    case 'ADD_MEMBER':
+      return appendId(state, action);
     default:
       return state;
   }
