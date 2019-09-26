@@ -77,6 +77,7 @@ const Projects = props => {
 
   useEffect(() => {
     loadProjects();
+    // eslint-disable-next-line
   }, []);
 
   return (

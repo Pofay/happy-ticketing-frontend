@@ -5,8 +5,6 @@ import {
   Typography,
   Tooltip,
   Avatar,
-  GridList,
-  GridListTile,
   IconButton
 } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
@@ -68,10 +66,11 @@ const Project = props => {
   const projectId = match.params.id;
 
   const labels = ['TO IMPLEMENT', 'PARTIAL', 'COMPLETE'];
- ////
+
   useEffect(() => {
     subscribeToChanges(channelName);
     return unsubscribeToChanges;
+    // eslint-disable-next-line
   }, []);
 
   return (
