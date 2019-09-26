@@ -68,7 +68,7 @@ const Project = props => {
   const projectId = match.params.id;
 
   const labels = ['TO IMPLEMENT', 'PARTIAL', 'COMPLETE'];
-
+ ////
   useEffect(() => {
     subscribeToChanges(channelName);
     return unsubscribeToChanges;

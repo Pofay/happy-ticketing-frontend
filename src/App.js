@@ -1,5 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { CircularProgress } from '@material-ui/core';
+import { useAuth0 } from './components/auth0-wrapper';
 import './App.css';
 import Project from './pages/Project';
 import Index from './pages/Index';
@@ -8,6 +10,15 @@ import PrivateRoute from './components/privateRoute';
 import DialogContainer from './containers/DialogContainer';
 
 const App = () => {
+  const { loading } = useAuth0();
+
+  if (loading)
+    return (
+      <>
+        <CircularProgress />
+      </>
+    );
+
   return (
     <div className="App">
       <BrowserRouter>
