@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
+import { head } from 'ramda';
 import MenuBar from '../../components/MenuBar';
 import {
   Button,
@@ -8,12 +9,11 @@ import {
   List,
   ListItem,
   Card,
-  Paper,
   CardContent,
   Divider,
   Typography,
-  GridList,
-  GridListTile
+  Tooltip,
+  Avatar
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { useAuth0 } from '../../components/auth0-wrapper';
@@ -22,6 +22,7 @@ import { withRouter } from 'react-router-dom';
 import getAllProjects from './reducers/selectors';
 import DialogContainerActions from '../../containers/DialogContainer/actions';
 import { pipe } from 'ramda';
+import ProjectSummary from '../../components/ProjectSummary';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -35,35 +36,13 @@ const useStyles = makeStyles(theme => ({
   },
   card: {
     width: 750
-  },
-  toImplement: {
-    padding: 5,
-    textAlign: 'center',
-    border: 'solid'
-  },
-  partial: {
-    padding: 5,
-    textAlign: 'center',
-    background: 'linear-gradient(to right, green 50%, white 50%)',
-    border: 'solid'
-  },
-  complete: {
-    padding: 5,
-    textAlign: 'center',
-    background: 'green',
-    border: 'solid'
-  },
-  section: {
-    marginTop: '2%'
-  },
-  tile: {
-    minWidth: 80
   }
 }));
 
 const mapStateToProps = state => ({
   projects: getAllProjects(state),
-  tasks: taskIds => taskIds.map(id => state.tasks.byId[id])
+  tasks: taskIds => taskIds.map(id => state.tasks.byId[id]),
+  members: memberIds => memberIds.map(id => state.members.byId[id])
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -81,6 +60,7 @@ const Projects = props => {
   const {
     projects,
     tasks,
+    members,
     openAddProjectDialog,
     loadAllProjectsRequest
   } = props;
@@ -116,68 +96,49 @@ const Projects = props => {
                       <Typography variant="h5" component="h1">
                         <Link to={`projects/${p.id}`}>{p.name}</Link>
                       </Typography>
+                      <br />
                       <Divider />
+                      <br />
                       <Typography variant="h5" component="h2">
                         Members
                       </Typography>
+                      <Grid container spacing={2}>
+                        <Grid item xs={6}>
+                          <Grid
+                            container
+                            justify="center"
+                            alignItems="center"
+                            spacing={4}
+                          >
+                            {members(p.members).map(m => (
+                              <Tooltip key={m.id} title={m.email}>
+                                <Avatar>{head(m.email).toUpperCase()}</Avatar>
+                              </Tooltip>
+                            ))}
+                          </Grid>
+                        </Grid>
+                      </Grid>
+                      <br />
                       <Divider />
-                      <div className={classes.section}>
-                        <Typography variant="h6" component="h6">
-                          To Implement
-                        </Typography>
-                        <GridList cellHeight={40}>
-                          {tasks(p.tasks)
-                            .filter(t => t.status === 'TO IMPLEMENT')
-                            .map(t => (
-                              <GridListTile key={t.id} className={classes.tile}>
-                                <Paper
-                                  component="div"
-                                  className={classes.toImplement}
-                                >
-                                  {t.name}
-                                </Paper>
-                              </GridListTile>
-                            ))}
-                        </GridList>
-                      </div>
-                      <div className={classes.section}>
-                        <Typography variant="h6" component="h6">
-                          Partial
-                        </Typography>
-                        <GridList cellHeight={40}>
-                          {tasks(p.tasks)
-                            .filter(t => t.status === 'PARTIAL')
-                            .map(t => (
-                              <GridListTile key={t.id} className={classes.tile}>
-                                <Paper
-                                  component="div"
-                                  className={classes.partial}
-                                >
-                                  {t.name}
-                                </Paper>
-                              </GridListTile>
-                            ))}
-                        </GridList>
-                      </div>
-                      <div className={classes.section}>
-                        <Typography variant="h6" component="h6">
-                          Complete
-                        </Typography>
-                        <GridList cellHeight={40}>
-                          {tasks(p.tasks)
-                            .filter(t => t.status === 'COMPLETE')
-                            .map(t => (
-                              <GridListTile key={t.id} className={classes.tile}>
-                                <Paper
-                                  component="div"
-                                  className={classes.complete}
-                                >
-                                  {t.name}
-                                </Paper>
-                              </GridListTile>
-                            ))}
-                        </GridList>
-                      </div>
+                      <br />
+                      <ProjectSummary
+                        tasks={tasks(p.tasks).filter(
+                          t => t.status === 'TO IMPLEMENT'
+                        )}
+                        statusTitle={'TO IMPLEMENT'}
+                      />
+                      <ProjectSummary
+                        tasks={tasks(p.tasks).filter(
+                          t => t.status === 'PARTIAL'
+                        )}
+                        statusTitle={'PARTIAL'}
+                      />
+                      <ProjectSummary
+                        tasks={tasks(p.tasks).filter(
+                          t => t.status === 'COMPLETE'
+                        )}
+                        statusTitle={'COMPLETE'}
+                      />
                     </CardContent>
                   </Card>
                 </ListItem>

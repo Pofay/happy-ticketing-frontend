@@ -1,8 +1,18 @@
 import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
+import {
+  Grid,
+  Typography,
+  Tooltip,
+  Avatar,
+  GridList,
+  GridListTile,
+  IconButton
+} from '@material-ui/core';
+import AddIcon from '@material-ui/icons/Add';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import { head } from 'ramda';
 import TaskList from '../../components/TaskList';
 import MenuBar from '../../components/MenuBar';
 import DialogActions from '../../containers/DialogContainer/actions';
@@ -30,8 +40,16 @@ const useStyles = makeStyles(theme => ({
     marginRight: '2%'
   },
   tasksContainer: {
+    marginTop: '2%',
     marginLeft: '2%',
     marginRight: '2%'
+  },
+  avatar: {
+    marginLeft: 10,
+    marginRight: 5
+  },
+  members: {
+    paddingTop: '5%'
   }
 }));
 
@@ -43,6 +61,7 @@ const Project = props => {
     channelName,
     name,
     tasks,
+    members,
     subscribeToChanges,
     unsubscribeToChanges
   } = props;
@@ -58,6 +77,24 @@ const Project = props => {
   return (
     <div className={classes.root}>
       <MenuBar title={name} />
+      <Grid container justify="left" alignItems="flex-start">
+        <Grid item>
+          <Typography variant="h5" component="h5" className={classes.members}>
+            Members:
+          </Typography>
+        </Grid>
+
+        {members.map(m => (
+          <Tooltip key={m.id} title={m.email}>
+            <Avatar className={classes.avatar}>
+              {head(m.email).toUpperCase()}
+            </Avatar>
+          </Tooltip>
+        ))}
+        <IconButton aria-label="add">
+          <AddIcon />
+        </IconButton>
+      </Grid>
       <Grid container spacing={16} className={classes.tasksContainer}>
         <Grid item xs={4}>
           <TaskList
