@@ -1,16 +1,9 @@
 import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import {
-  Grid,
-  Typography,
-  Tooltip,
-  Avatar,
-  IconButton
-} from '@material-ui/core';
+import { Grid, Typography, Fab } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { head } from 'ramda';
 import TaskList from '../../components/TaskList';
 import MenuBar from '../../components/MenuBar';
 import DialogActions from '../../containers/DialogContainer/actions';
@@ -21,12 +14,15 @@ import {
   subscribeToProject,
   unsubscribeToProject
 } from './actions';
+import ProjectMembers from '../../components/ProjectMembers';
 
 const mapDispatchToProps = dispatch => ({
   requestLoadProject: (token, projectId) =>
     dispatch(loadProjectDetails({ token, projectId })),
   openAddTaskDialog: projectId => initialTaskStatus =>
     dispatch(DialogActions.openAddTaskDialog({ initialTaskStatus, projectId })),
+  openAddMemberDialog: projectId =>
+    dispatch(DialogActions.openAddMemberDialog(projectId)),
   subscribeToChanges: channelName => dispatch(subscribeToProject(channelName)),
   unsubscribeToChanges: () => dispatch(unsubscribeToProject)
 });
@@ -56,6 +52,7 @@ const Project = props => {
   const {
     match,
     openAddTaskDialog,
+    openAddMemberDialog,
     channelName,
     name,
     tasks,
@@ -83,16 +80,14 @@ const Project = props => {
           </Typography>
         </Grid>
 
-        {members.map(m => (
-          <Tooltip key={m.id} title={m.email}>
-            <Avatar className={classes.avatar}>
-              {head(m.email).toUpperCase()}
-            </Avatar>
-          </Tooltip>
-        ))}
-        <IconButton aria-label="add">
+        <ProjectMembers members={members} />
+        <Fab
+          color="primary"
+          aria-label="add"
+          onClick={() => openAddMemberDialog(projectId)}
+        >
           <AddIcon />
-        </IconButton>
+        </Fab>
       </Grid>
       <Grid container spacing={16} className={classes.tasksContainer}>
         <Grid item xs={4}>
