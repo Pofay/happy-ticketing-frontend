@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Grid, Typography, Fab } from '@material-ui/core';
+import { Grid, Typography, IconButton } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
@@ -81,13 +81,13 @@ const Project = props => {
         </Grid>
 
         <ProjectMembers members={members} />
-        <Fab
+        <IconButton
           color="primary"
           aria-label="add"
           onClick={() => openAddMemberDialog(projectId)}
         >
           <AddIcon />
-        </Fab>
+        </IconButton>
       </Grid>
       <Grid container spacing={16} className={classes.tasksContainer}>
         <Grid item xs={4}>
