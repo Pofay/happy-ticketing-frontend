@@ -4,6 +4,7 @@ import Dialog from '@material-ui/core/Dialog';
 import AddTaskDialog from './AddTaskDialog';
 import DialogActions from './actions';
 import AddProjectDialog from './AddProjectDialog';
+import AddMemberDialog from './AddMemberDialog';
 
 const mapStateToProps = state => ({
   isOpen: state.openedDialog.isOpen,
@@ -26,6 +27,8 @@ const renderAppropiateDialog = (dialogType, onClose) => {
       return <AddTaskDialog onClose={onClose} />;
     case 'ADD_PROJECT_DIALOG':
       return <AddProjectDialog onClose={onClose} />;
+    case 'ADD_MEMBER_DIALOG':
+      return <AddMemberDialog onClose={onClose} />;
     default:
       return <></>;
   }
