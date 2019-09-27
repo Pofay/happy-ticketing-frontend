@@ -1,16 +1,9 @@
 import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import {
-  Grid,
-  Typography,
-  Tooltip,
-  Avatar,
-  IconButton
-} from '@material-ui/core';
+import { Grid, Typography, IconButton } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { head } from 'ramda';
 import TaskList from '../../components/TaskList';
 import MenuBar from '../../components/MenuBar';
 import DialogActions from '../../containers/DialogContainer/actions';
@@ -21,6 +14,7 @@ import {
   subscribeToProject,
   unsubscribeToProject
 } from './actions';
+import ProjectMembers from '../../components/ProjectMembers';
 
 const mapDispatchToProps = dispatch => ({
   requestLoadProject: (token, projectId) =>
@@ -83,13 +77,7 @@ const Project = props => {
           </Typography>
         </Grid>
 
-        {members.map(m => (
-          <Tooltip key={m.id} title={m.email}>
-            <Avatar className={classes.avatar}>
-              {head(m.email).toUpperCase()}
-            </Avatar>
-          </Tooltip>
-        ))}
+        <ProjectMembers members={members} />
         <IconButton aria-label="add">
           <AddIcon />
         </IconButton>

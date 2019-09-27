@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
-import { head } from 'ramda';
 import MenuBar from '../../components/MenuBar';
 import {
   Button,
@@ -11,18 +10,17 @@ import {
   Card,
   CardContent,
   Divider,
-  Typography,
-  Tooltip,
-  Avatar
+  Typography
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
+import { pipe } from 'ramda';
+import { withRouter } from 'react-router-dom';
 import { useAuth0 } from '../../components/auth0-wrapper';
 import ProjectsPageActions from './actions';
-import { withRouter } from 'react-router-dom';
 import getAllProjects from './reducers/selectors';
 import DialogContainerActions from '../../containers/DialogContainer/actions';
-import { pipe } from 'ramda';
 import ProjectSummary from '../../components/ProjectSummary';
+import ProjectMembers from '../../components/ProjectMembers';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -111,11 +109,7 @@ const Projects = props => {
                             alignItems="center"
                             spacing={4}
                           >
-                            {members(p.members).map(m => (
-                              <Tooltip key={m.id} title={m.email}>
-                                <Avatar>{head(m.email).toUpperCase()}</Avatar>
-                              </Tooltip>
-                            ))}
+                            <ProjectMembers members={members(p.members)} />
                           </Grid>
                         </Grid>
                       </Grid>
