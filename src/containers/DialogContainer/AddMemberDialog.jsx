@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { useAuth0 } from '../../components/auth0-wrapper';
 import {
   DialogTitle,
   DialogContent,
@@ -10,6 +9,8 @@ import {
   Button
 } from '@material-ui/core';
 import { connect } from 'react-redux';
+import { useAuth0 } from '../../components/auth0-wrapper';
+import DialogContainerActions from './actions';
 
 const useStyles = makeStyles(theme => ({
   fields: {
@@ -25,9 +26,17 @@ const mapStateToProps = state => ({
   dialogData: state.openedDialog.dialogData
 });
 
+const mapDispatchToProps = dispatch => ({
+  submitMember: (email, projectId, token) =>
+    dispatch(
+      DialogContainerActions.submitMemberRequest(email, projectId, token)
+    )
+});
+
 const AddMemberDialog = props => {
   const classes = useStyles();
   const { projectId } = props.dialogData;
+  const { submitMember } = props;
   const { getTokenSilently } = useAuth0();
   const [email, setEmail] = useState('');
 
@@ -37,11 +46,10 @@ const AddMemberDialog = props => {
     setEmail('');
     props.onClose();
   };
-  const handleSubmit = event => {
-    // getTokenSilently
-    // dispatch action(email,projectId, token) to submit add member request
-    // handleClose()
-    handleClose();
+  const handleSubmit = async event => {
+    const token = await getTokenSilently();
+    submitMember(email, projectId, token);
+    handleClose(event);
   };
 
   return (
@@ -72,4 +80,7 @@ const AddMemberDialog = props => {
   );
 };
 
-export default connect(mapStateToProps)(AddMemberDialog);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AddMemberDialog);
