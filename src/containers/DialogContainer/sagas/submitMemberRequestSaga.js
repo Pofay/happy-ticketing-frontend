@@ -22,7 +22,4 @@ export function* submitMemberRequestSaga(action) {
       memberEmail: email
     })
   );
-  // Get Yield Result
-  // if Result is Created then notify success Snackbar
-  // else notify error Snackbar
 }
