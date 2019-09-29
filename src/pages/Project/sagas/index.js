@@ -30,6 +30,7 @@ function* subscribeToProjectChanges(channelName) {
         yield putTaskToStore(action.payload);
         break;
       case 'member-added':
+        console.table(action.payload);
         yield putMemberToStore(action.payload);
         break;
       default:
@@ -61,6 +62,7 @@ const createProjectChangesChannel = channelName => {
 
     return () => {
       channel.unbind('task-added');
+      channel.unbind('member-added');
       PusherService.unsubscribe();
     };
   });

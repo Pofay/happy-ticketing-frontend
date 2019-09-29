@@ -23,9 +23,9 @@ const ProjectMember = props => {
 const ProjectMembers = props => {
   const { members } = props;
   return members.map(m => (
-    <>
-      <ProjectMember key={m.id} {...m} />
-    </>
+    <div key={m.id}>
+      <ProjectMember {...m} />
+    </div>
   ));
 };
 

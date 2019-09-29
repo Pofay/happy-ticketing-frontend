@@ -1,7 +1,6 @@
 import { createSelector } from 'reselect';
 
 const getTasksById = state => state.tasks.byId;
-const getTaskIds = state => state.tasks.allIds;
 
 const getProjectTaskIds = (state, props) => {
   const projectId = props.match.params.id;
@@ -18,32 +17,34 @@ const getChannelName = (state, props) => {
   return state.projects.byId[projectId].channelName;
 };
 
-const getMembers = (state, props) => {
-  const projectId = props.match.params.id;
-  const project = state.projects.byId[projectId];
-  return project.members.map(id => state.members.byId[id]);
-};
-
 const makeGetTasksForProject = () =>
   createSelector(
-    getTasksById,
-    getProjectTaskIds,
+    [getTasksById, getProjectTaskIds],
     (allTasks, projectTasksIds) => projectTasksIds.map(id => allTasks[id])
   );
 
-export const getAllTasks = createSelector(
-  [getTasksById, getTaskIds],
-  (byId, allIds) => allIds.map(id => byId[id])
-);
+const getMembers = state => state.members.byId;
+
+const getMemberIds = (state, props) => {
+  const projectId = props.match.params.id;
+  return state.projects.byId[projectId].members;
+};
+
+const makeGetMembersForProject = () =>
+  createSelector(
+    [getMembers, getMemberIds],
+    (members, memberIds) => memberIds.map(id => members[id])
+  );
 
 export const makeMapStateToProps = () => {
   const getTasksForProject = makeGetTasksForProject();
+  const getMembersForProject = makeGetMembersForProject();
 
   const mapStateToProps = (state, props) => ({
     tasks: getTasksForProject(state, props),
     name: getProjectName(state, props),
     channelName: getChannelName(state, props),
-    members: getMembers(state, props)
+    members: getMembersForProject(state, props)
   });
 
   return mapStateToProps;
