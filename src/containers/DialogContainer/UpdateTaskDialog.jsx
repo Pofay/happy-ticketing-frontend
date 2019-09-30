@@ -74,7 +74,7 @@ const UpdateTaskDialog = props => {
     setValues({ ...values, [name]: event.target.value });
 
   const handleClose = event => {
-    setValues({ taskName: '', taskStatus: '' });
+    setValues({ taskName: '', taskStatus: '', assignedTo: '' });
     props.onClose();
   };
 
@@ -95,7 +95,7 @@ const UpdateTaskDialog = props => {
 
   return (
     <form onSubmit={handleSubmit} className={classes.root}>
-      <DialogTitle id="form-dialog-title">Add a New Task</DialogTitle>
+      <DialogTitle id="form-dialog-title">Update Task Details</DialogTitle>
       <DialogContent>
         <TextField
           value={values.taskName}
