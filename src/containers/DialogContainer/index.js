@@ -5,6 +5,7 @@ import AddTaskDialog from './AddTaskDialog';
 import DialogActions from './actions';
 import AddProjectDialog from './AddProjectDialog';
 import AddMemberDialog from './AddMemberDialog';
+import UpdateTaskDialog from './UpdateTaskDialog';
 
 const mapStateToProps = state => ({
   isOpen: state.openedDialog.isOpen,
@@ -29,6 +30,8 @@ const renderAppropiateDialog = (dialogType, onClose) => {
       return <AddProjectDialog onClose={onClose} />;
     case 'ADD_MEMBER_DIALOG':
       return <AddMemberDialog onClose={onClose} />;
+    case 'UPDATE_TASK_DIALOG':
+      return <UpdateTaskDialog onClose={onClose} />;
     default:
       return <></>;
   }

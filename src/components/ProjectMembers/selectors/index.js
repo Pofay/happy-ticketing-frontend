@@ -6,7 +6,7 @@ const getMemberIds = (state, props) => {
   return state.projects.byId[projectId].members;
 };
 
-const makeGetMembersForProject = () =>
+export const makeGetMembersForProject = () =>
   createSelector(
     [getMembers, getMemberIds],
     (members, memberIds) => memberIds.map(id => members[id])
