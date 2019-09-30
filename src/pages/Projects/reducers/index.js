@@ -16,6 +16,14 @@ const addTaskId = (state, action) => {
   return merge(state, { [projectId]: updatedProject });
 };
 
+const addMemberId = (state, action) => {
+  const { id, projectId } = action.payload;
+  const { members } = state[projectId];
+  const updatedMembers = [...new Set(members.concat(id))];
+  const updatedProject = merge(state[projectId], { members: updatedMembers });
+  return merge(state, { [projectId]: updatedProject });
+};
+
 const concatProjectIdToState = (state, action) => {
   const projectId = action.payload.result;
   return contains(projectId, state) ? state : state.concat(projectId);
@@ -27,6 +35,8 @@ const addProject = (state = {}, action) => {
       return addProjectToState(state, action);
     case 'ADD_TASK':
       return addTaskId(state, action);
+    case 'ADD_MEMBER':
+      return addMemberId(state, action);
     default:
       return state;
   }

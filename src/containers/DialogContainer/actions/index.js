@@ -4,6 +4,7 @@ import { submitTaskRequest } from './submitTaskRequest';
 import { openAddProjectDialog } from './openAddProjectDialog';
 import { submitProjectRequest } from './submitProjectRequest';
 import { openAddMemberDialog } from './openAddMemberDialog';
+import { submitMemberRequest } from './submitMemberRequest';
 
 export default {
   closeDialog,
@@ -11,5 +12,6 @@ export default {
   openAddProjectDialog,
   openAddMemberDialog,
   submitTaskRequest,
-  submitProjectRequest
+  submitProjectRequest,
+  submitMemberRequest
 };

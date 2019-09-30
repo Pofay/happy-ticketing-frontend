@@ -2,6 +2,7 @@ import reducer from '../index';
 import exampleResponse from './exampleResponse.json';
 import ProjectsActions from '../../actions';
 import addTask from '../../../globalActions/addTask';
+import addMember from '../../../globalActions/addMember';
 
 it('Returns Initial State', () => {
   const expected = {
@@ -63,6 +64,36 @@ it('When a task is added, its id is added to projects tasks id array', () => {
     ProjectsActions.addProjectAction(project)
   );
   const actual = reducer(newState, addTask(payload));
+
+  expect(actual).toEqual(expected);
+});
+
+it('should add member id when a new member is added', () => {
+  const { data } = exampleResponse;
+  const project = data[0];
+  const expected = {
+    byId: {
+      1: {
+        id: 1,
+        name: 'ProjectM',
+        members: [1, 2, 3],
+        channelName: '213242134@ProjectM',
+        tasks: ['41e11bed-1244-4142-a3bf-ada37906fc4e']
+      }
+    },
+    allIds: [1]
+  };
+  const payload = {
+    id: 3,
+    projectId: 1,
+    name: 'pofay@example.com'
+  };
+
+  const newState = reducer(
+    undefined,
+    ProjectsActions.addProjectAction(project)
+  );
+  const actual = reducer(newState, addMember(payload));
 
   expect(actual).toEqual(expected);
 });

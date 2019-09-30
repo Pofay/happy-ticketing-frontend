@@ -2,10 +2,16 @@ import { take, put, fork, takeEvery } from 'redux-saga/effects';
 import { eventChannel } from 'redux-saga';
 import { pipe } from 'ramda';
 import addTask from '../../globalActions/addTask';
+import addMember from '../../globalActions/addMember';
 import PusherService from '../services/pusherService';
 
 const putTaskToStore = pipe(
   addTask,
+  put
+);
+
+const putMemberToStore = pipe(
+  addMember,
   put
 );
 
@@ -23,6 +29,9 @@ function* subscribeToProjectChanges(channelName) {
       case 'task-added':
         yield putTaskToStore(action.payload);
         break;
+      case 'member-added':
+        yield putMemberToStore(action.payload);
+        break;
       default:
         break;
     }
@@ -36,15 +45,23 @@ const createProjectChangesChannel = channelName => {
   return eventChannel(emitter => {
     const channel = PusherService.subscribe(channelName);
 
-    channel.bind('task-added', function(data) {
+    channel.bind('task-added', data =>
       emitter({
         type: 'task-added',
         payload: data
-      });
-    });
+      })
+    );
+
+    channel.bind('member-added', data =>
+      emitter({
+        type: 'member-added',
+        payload: data
+      })
+    );
 
     return () => {
       channel.unbind('task-added');
+      channel.unbind('member-added');
       PusherService.unsubscribe();
     };
   });

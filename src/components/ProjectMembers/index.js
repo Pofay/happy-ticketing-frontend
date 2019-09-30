@@ -2,6 +2,8 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { head } from 'ramda';
 import { Tooltip, Avatar } from '@material-ui/core';
+import { connect } from 'react-redux';
+import { makeMapStateToProps } from './selectors';
 
 const useStyles = makeStyles(theme => ({
   avatar: {
@@ -23,10 +25,10 @@ const ProjectMember = props => {
 const ProjectMembers = props => {
   const { members } = props;
   return members.map(m => (
-    <>
-      <ProjectMember key={m.id} {...m} />
-    </>
+    <div key={m.id}>
+      <ProjectMember {...m} />
+    </div>
   ));
 };
 
-export default ProjectMembers;
+export default connect(makeMapStateToProps)(ProjectMembers);
