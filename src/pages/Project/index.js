@@ -72,7 +72,7 @@ const Project = props => {
   return (
     <div className={classes.root}>
       <MenuBar title={name} />
-      <Grid container justify="left" alignItems="flex-start">
+      <Grid container alignItems="flex-start">
         <Grid item>
           <Typography variant="h5" component="h5" className={classes.members}>
             Members:
