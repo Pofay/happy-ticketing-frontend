@@ -42,6 +42,7 @@ const useStyles = makeStyles(theme => ({
 
 const Task = props => {
   const classes = useStyles();
+  const { onClickMore } = props;
 
   return (
     <ListItem key={props.id}>
@@ -49,7 +50,13 @@ const Task = props => {
         <Typography variant="h6">{props.name}</Typography>
         <Typography variant="h6">Assigned To: {props.assignedTo}</Typography>
         <ListItemSecondaryAction>
-          <IconButton className={classes.more} aria-label="settings">
+          <IconButton
+            className={classes.more}
+            aria-label="settings"
+            onClick={event =>
+              onClickMore(props.name, props.status, props.assignedTo, props.id)
+            }
+          >
             <MoreVertIcon />
           </IconButton>
         </ListItemSecondaryAction>
@@ -78,7 +85,7 @@ const AddTicketButton = props => {
 // Props: Label, Tasks, OnClickAddTicket, OnClickMoreOptions
 const TaskList = props => {
   const classes = useStyles();
-  const { onClickAddTask, label, tasks } = props;
+  const { onClickAddTask, onClickMore, label, tasks } = props;
 
   const handleClick = event => {
     event.preventDefault();
@@ -90,7 +97,7 @@ const TaskList = props => {
       <Typography variant="h5">{label}</Typography>
       <List className={classes.list}>
         {tasks.map(t => (
-          <Task key={t.id} {...t} />
+          <Task key={t.id} onClickMore={onClickMore} {...t} />
         ))}
       </List>
       <AddTicketButton onClick={handleClick} />

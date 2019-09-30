@@ -19,6 +19,12 @@ const dialogReducer = (state = INITIAL_STATE, action) => {
         dialogType: 'ADD_MEMBER_DIALOG',
         dialogData: action.dialogData
       };
+    case 'UPDATE_TASK_DIALOG':
+      return {
+        isOpen: true,
+        dialogType: 'UPDATE_TASK_DIALOG',
+        dialogData: action.dialogData
+      };
     case 'CLOSE_DIALOG':
       return INITIAL_STATE;
     default:

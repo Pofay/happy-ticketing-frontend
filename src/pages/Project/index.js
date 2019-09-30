@@ -23,6 +23,21 @@ const mapDispatchToProps = dispatch => ({
     dispatch(DialogActions.openAddTaskDialog({ initialTaskStatus, projectId })),
   openAddMemberDialog: projectId =>
     dispatch(DialogActions.openAddMemberDialog(projectId)),
+  openUpdateTaskDialog: projectId => (
+    taskName,
+    taskStatus,
+    assignedTo,
+    taskId
+  ) =>
+    dispatch(
+      DialogActions.openUpdateTaskDialog({
+        taskName,
+        taskStatus,
+        assignedTo,
+        taskId,
+        projectId
+      })
+    ),
   subscribeToChanges: channelName => dispatch(subscribeToProject(channelName)),
   unsubscribeToChanges: () => dispatch(unsubscribeToProject)
 });
@@ -53,6 +68,7 @@ const Project = props => {
     match,
     openAddTaskDialog,
     openAddMemberDialog,
+    openUpdateTaskDialog,
     channelName,
     name,
     tasks,
@@ -92,22 +108,28 @@ const Project = props => {
         <Grid item xs={4}>
           <TaskList
             label={labels[0]}
+            projectId={projectId}
             tasks={tasks.filter(t => t.status === labels[0])}
             onClickAddTask={openAddTaskDialog(projectId)}
+            onClickMore={openUpdateTaskDialog(projectId)}
           />
         </Grid>
         <Grid item xs={4}>
           <TaskList
             label={labels[1]}
+            projectId={projectId}
             tasks={tasks.filter(t => t.status === labels[1])}
             onClickAddTask={openAddTaskDialog(projectId)}
+            onClickMore={openUpdateTaskDialog(projectId)}
           />
         </Grid>
         <Grid item xs={4}>
           <TaskList
             label={labels[2]}
+            projectId={projectId}
             tasks={tasks.filter(t => t.status === labels[2])}
             onClickAddTask={openAddTaskDialog(projectId)}
+            onClickMore={openUpdateTaskDialog(projectId)}
           />
         </Grid>
       </Grid>
