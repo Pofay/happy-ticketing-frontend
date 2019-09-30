@@ -23,28 +23,13 @@ const makeGetTasksForProject = () =>
     (allTasks, projectTasksIds) => projectTasksIds.map(id => allTasks[id])
   );
 
-const getMembers = state => state.members.byId;
-
-const getMemberIds = (state, props) => {
-  const projectId = props.match.params.id;
-  return state.projects.byId[projectId].members;
-};
-
-const makeGetMembersForProject = () =>
-  createSelector(
-    [getMembers, getMemberIds],
-    (members, memberIds) => memberIds.map(id => members[id])
-  );
-
 export const makeMapStateToProps = () => {
   const getTasksForProject = makeGetTasksForProject();
-  const getMembersForProject = makeGetMembersForProject();
 
   const mapStateToProps = (state, props) => ({
     tasks: getTasksForProject(state, props),
     name: getProjectName(state, props),
-    channelName: getChannelName(state, props),
-    members: getMembersForProject(state, props)
+    channelName: getChannelName(state, props)
   });
 
   return mapStateToProps;

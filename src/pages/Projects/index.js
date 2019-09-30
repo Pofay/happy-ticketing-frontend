@@ -39,8 +39,7 @@ const useStyles = makeStyles(theme => ({
 
 const mapStateToProps = state => ({
   projects: getAllProjects(state),
-  tasks: taskIds => taskIds.map(id => state.tasks.byId[id]),
-  members: memberIds => memberIds.map(id => state.members.byId[id])
+  tasks: taskIds => taskIds.map(id => state.tasks.byId[id])
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -58,7 +57,6 @@ const Projects = props => {
   const {
     projects,
     tasks,
-    members,
     openAddProjectDialog,
     loadAllProjectsRequest
   } = props;
@@ -109,7 +107,7 @@ const Projects = props => {
                             alignItems="center"
                             spacing={4}
                           >
-                            <ProjectMembers members={members(p.members)} />
+                            <ProjectMembers projectId={p.id} />
                           </Grid>
                         </Grid>
                       </Grid>

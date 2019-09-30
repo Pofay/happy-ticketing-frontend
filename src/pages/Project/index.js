@@ -56,7 +56,6 @@ const Project = props => {
     channelName,
     name,
     tasks,
-    members,
     subscribeToChanges,
     unsubscribeToChanges
   } = props;
@@ -80,7 +79,7 @@ const Project = props => {
           </Typography>
         </Grid>
 
-        <ProjectMembers members={members} />
+        <ProjectMembers projectId={projectId} />
         <IconButton
           color="primary"
           aria-label="add"
