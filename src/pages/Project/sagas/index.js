@@ -32,6 +32,9 @@ function* subscribeToProjectChanges(channelName) {
       case 'member-added':
         yield putMemberToStore(action.payload);
         break;
+      case 'task-updated':
+        yield putTaskToStore(action.payload);
+        break;
       default:
         break;
     }
@@ -52,6 +55,13 @@ const createProjectChangesChannel = channelName => {
       })
     );
 
+    channel.bind('task-updated', data =>
+      emitter({
+        type: 'task-updated',
+        payload: data
+      })
+    );
+
     channel.bind('member-added', data =>
       emitter({
         type: 'member-added',
@@ -61,6 +71,7 @@ const createProjectChangesChannel = channelName => {
 
     return () => {
       channel.unbind('task-added');
+      channel.unbind('task-updated');
       channel.unbind('member-added');
       PusherService.unsubscribe();
     };

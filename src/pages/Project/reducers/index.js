@@ -3,7 +3,7 @@ import { contains, merge } from 'ramda';
 
 const addTask = (state, action) => {
   const { id } = action.payload;
-  return merge(state, { [id]: action.payload });
+  return { ...state, [id]: action.payload };
 };
 
 const arrayToObject = (array, keyField) =>

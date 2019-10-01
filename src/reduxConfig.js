@@ -31,6 +31,10 @@ function* rootSaga() {
       'SUBMIT_MEMBER_REQUEST',
       DialogContainerSagas.submitMemberRequestSaga
     ),
+    takeLatest(
+      'SUBMIT_UPDATE_TASK_REQUEST',
+      DialogContainerSagas.submitUpdateTaskRequestSaga
+    ),
     takeLatest('SUBSCRIBE_TO_PROJECT', initializeSubscriptionToProject)
   ]);
 }
@@ -41,7 +45,7 @@ const configureStore = () => {
   const store = createStore(reducers, applyMiddleware(sagaMiddleware));
 
   store.sagaTask = sagaMiddleware.run(rootSaga);
-  //store.subscribe(() => console.table(store.getState()));
+  store.subscribe(() => console.table(store.getState()));
   return store;
 };
 
