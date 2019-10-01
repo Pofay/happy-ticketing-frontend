@@ -11,7 +11,7 @@ const addProjectToState = (state, action) => {
 const addTaskId = (state, action) => {
   const { id, projectId } = action.payload;
   const { tasks } = state[projectId];
-  const updatedTasks = tasks.concat(id);
+  const updatedTasks = [...new Set(tasks.concat(id))];
   const updatedProject = merge(state[projectId], { tasks: updatedTasks });
   return merge(state, { [projectId]: updatedProject });
 };
