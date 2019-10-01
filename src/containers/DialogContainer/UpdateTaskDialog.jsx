@@ -78,19 +78,17 @@ const UpdateTaskDialog = props => {
     props.onClose();
   };
 
-  const handleSubmit = event => {
-    getTokenSilently()
-      .then(token =>
-        props.updateTask(
-          values.taskName,
-          values.taskStatus,
-          values.assignedTo,
-          taskId,
-          token,
-          projectId
-        )
-      )
-      .then(() => handleClose(event));
+  const handleSubmit = async event => {
+    const token = await getTokenSilently();
+    props.updateTask(
+      values.taskName,
+      values.taskStatus,
+      values.assignedTo,
+      taskId,
+      token,
+      projectId
+    );
+    handleClose(event);
   };
 
   return (
