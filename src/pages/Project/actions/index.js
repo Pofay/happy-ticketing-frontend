@@ -5,6 +5,6 @@ export const subscribeToProject = channelName => ({
   payload: channelName
 });
 
-export const unsubscribeToProject = {
+export const unsubscribeToProject = () => ({
   type: 'UNSUBSCRIBE_TO_PROJECT'
-};
+});
