@@ -1,4 +1,5 @@
-export const openAddTaskDialog = data => ({
+import { curry } from 'ramda';
+export const openAddTaskDialog = curry((projectId, initialTaskStatus) => ({
   type: 'ADD_TASK_DIALOG',
-  dialogData: data
-});
+  dialogData: { projectId, initialTaskStatus }
+}));

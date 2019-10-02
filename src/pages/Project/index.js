@@ -9,38 +9,16 @@ import MenuBar from '../../components/MenuBar';
 import DialogActions from '../../containers/DialogContainer/actions';
 
 import { makeMapStateToProps } from './reducers/selectors';
-import {
-  loadProjectDetails,
-  subscribeToProject,
-  unsubscribeToProject
-} from './actions';
+import { subscribeToProject, unsubscribeToProject } from './actions';
 import ProjectMembers from '../../components/ProjectMembers';
 
-const mapDispatchToProps = dispatch => ({
-  requestLoadProject: (token, projectId) =>
-    dispatch(loadProjectDetails({ token, projectId })),
-  openAddTaskDialog: projectId => initialTaskStatus =>
-    dispatch(DialogActions.openAddTaskDialog({ initialTaskStatus, projectId })),
-  openAddMemberDialog: projectId =>
-    dispatch(DialogActions.openAddMemberDialog(projectId)),
-  openUpdateTaskDialog: projectId => (
-    taskName,
-    taskStatus,
-    assignedTo,
-    taskId
-  ) =>
-    dispatch(
-      DialogActions.openUpdateTaskDialog({
-        taskName,
-        taskStatus,
-        assignedTo,
-        taskId,
-        projectId
-      })
-    ),
-  subscribeToChanges: channelName => dispatch(subscribeToProject(channelName)),
-  unsubscribeToChanges: () => dispatch(unsubscribeToProject)
-});
+const mapDispatchToProps = {
+  openAddTaskDialog: DialogActions.openAddTaskDialog,
+  openAddMemberDialog: DialogActions.openAddMemberDialog,
+  openUpdateTaskDialog: DialogActions.openUpdateTaskDialog,
+  subscribeToProject,
+  unsubscribeToProject
+};
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -72,16 +50,16 @@ const Project = props => {
     channelName,
     name,
     tasks,
-    subscribeToChanges,
-    unsubscribeToChanges
+    subscribeToProject,
+    unsubscribeToProject
   } = props;
   const projectId = match.params.id;
 
   const labels = ['TO IMPLEMENT', 'PARTIAL', 'COMPLETE'];
 
   useEffect(() => {
-    subscribeToChanges(channelName);
-    return unsubscribeToChanges;
+    subscribeToProject(channelName);
+    return unsubscribeToProject;
     // eslint-disable-next-line
   }, []);
 
@@ -110,8 +88,8 @@ const Project = props => {
             label={labels[0]}
             projectId={projectId}
             tasks={tasks.filter(t => t.status === labels[0])}
-            onClickAddTask={openAddTaskDialog(projectId)}
-            onClickMore={openUpdateTaskDialog(projectId)}
+            onClickAddTask={openAddTaskDialog}
+            onClickMore={openUpdateTaskDialog}
           />
         </Grid>
         <Grid item xs={4}>
@@ -119,8 +97,8 @@ const Project = props => {
             label={labels[1]}
             projectId={projectId}
             tasks={tasks.filter(t => t.status === labels[1])}
-            onClickAddTask={openAddTaskDialog(projectId)}
-            onClickMore={openUpdateTaskDialog(projectId)}
+            onClickAddTask={openAddTaskDialog}
+            onClickMore={openUpdateTaskDialog}
           />
         </Grid>
         <Grid item xs={4}>
@@ -128,8 +106,8 @@ const Project = props => {
             label={labels[2]}
             projectId={projectId}
             tasks={tasks.filter(t => t.status === labels[2])}
-            onClickAddTask={openAddTaskDialog(projectId)}
-            onClickMore={openUpdateTaskDialog(projectId)}
+            onClickAddTask={openAddTaskDialog}
+            onClickMore={openUpdateTaskDialog}
           />
         </Grid>
       </Grid>

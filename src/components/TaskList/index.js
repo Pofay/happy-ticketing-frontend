@@ -53,9 +53,10 @@ const Task = props => {
           <IconButton
             className={classes.more}
             aria-label="settings"
-            onClick={event =>
-              onClickMore(props.name, props.status, props.assignedTo, props.id)
-            }
+            onClick={event => {
+              event.preventDefault();
+              onClickMore(props.name, props.status, props.assignedTo, props.id);
+            }}
           >
             <MoreVertIcon />
           </IconButton>
@@ -85,11 +86,15 @@ const AddTicketButton = props => {
 // Props: Label, Tasks, OnClickAddTicket, OnClickMoreOptions
 const TaskList = props => {
   const classes = useStyles();
-  const { onClickAddTask, onClickMore, label, tasks } = props;
+  const { onClickAddTask, onClickMore, label, tasks, projectId } = props;
 
-  const handleClick = event => {
+  const handleAddTask = event => {
     event.preventDefault();
-    onClickAddTask(label);
+    onClickAddTask(projectId, label);
+  };
+
+  const handleUpdateTask = (name, status, assignedTo, id) => {
+    onClickMore(projectId, name, status, assignedTo, id);
   };
 
   return (
@@ -97,10 +102,10 @@ const TaskList = props => {
       <Typography variant="h5">{label}</Typography>
       <List className={classes.list}>
         {tasks.map(t => (
-          <Task key={t.id} onClickMore={onClickMore} {...t} />
+          <Task key={t.id} onClickMore={handleUpdateTask} {...t} />
         ))}
       </List>
-      <AddTicketButton onClick={handleClick} />
+      <AddTicketButton onClick={handleAddTask} />
     </Paper>
   );
 };
