@@ -26,12 +26,9 @@ const mapStateToProps = state => ({
   dialogData: state.openedDialog.dialogData
 });
 
-const mapDispatchToProps = dispatch => ({
-  submitMember: (email, projectId, token) =>
-    dispatch(
-      DialogContainerActions.submitMemberRequest(email, projectId, token)
-    )
-});
+const mapDispatchToProps = {
+  submitMember: DialogContainerActions.submitMemberRequest
+};
 
 const AddMemberDialog = props => {
   const classes = useStyles();

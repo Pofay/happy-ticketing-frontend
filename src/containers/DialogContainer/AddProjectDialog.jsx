@@ -21,12 +21,9 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const mapDispatchToProps = dispatch => ({
-  submitProject: (token, projectName) =>
-    dispatch(
-      DialogContainerActions.submitProjectRequest({ token, projectName })
-    )
-});
+const mapDispatchToProps = {
+  submitProject: DialogContainerActions.submitProjectRequest
+};
 
 const AddProjectDialog = props => {
   const [projectName, setProjectName] = useState('');

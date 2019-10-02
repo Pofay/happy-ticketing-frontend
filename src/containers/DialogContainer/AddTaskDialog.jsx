@@ -15,17 +15,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import DialogContainerActions from './actions';
 import { useAuth0 } from '../../components/auth0-wrapper';
 
-const mapDispatchToProps = dispatch => ({
-  submitTask: (taskName, taskStatus, token, projectId) =>
-    dispatch(
-      DialogContainerActions.submitTaskRequest({
-        taskName,
-        taskStatus,
-        token,
-        projectId
-      })
-    )
-});
+const mapDispatchToProps = {
+  submitTask: DialogContainerActions.submitTaskRequest
+};
 
 const mapStateToProps = state => ({
   dialogData: state.openedDialog.dialogData

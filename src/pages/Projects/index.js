@@ -13,7 +13,6 @@ import {
   Typography
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
-import { pipe } from 'ramda';
 import { withRouter } from 'react-router-dom';
 import { useAuth0 } from '../../components/auth0-wrapper';
 import ProjectsPageActions from './actions';
@@ -42,15 +41,10 @@ const mapStateToProps = state => ({
   tasks: taskIds => taskIds.map(id => state.tasks.byId[id])
 });
 
-const mapDispatchToProps = dispatch => ({
-  loadAllProjectsRequest: token =>
-    pipe(
-      ProjectsPageActions.loadAllProjectsRequest,
-      dispatch
-    )(token),
-  openAddProjectDialog: () =>
-    dispatch(DialogContainerActions.openAddProjectDialog)
-});
+const mapDispatchToProps = {
+  loadAllProjectsRequest: ProjectsPageActions.loadAllProjectsRequest,
+  openAddProjectDialog: () => DialogContainerActions.openAddProjectDialog
+};
 
 const Projects = props => {
   const classes = useStyles();

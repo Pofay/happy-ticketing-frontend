@@ -28,19 +28,9 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = dispatch => ({
-  updateTask: (taskName, taskStatus, assignedTo, taskId, token, projectId) =>
-    dispatch(
-      DialogContainerActions.submitUpdateTaskRequest(
-        taskName,
-        taskStatus,
-        assignedTo,
-        taskId,
-        token,
-        projectId
-      )
-    )
-});
+const mapDispatchToProps = {
+  updateTask: DialogContainerActions.submitUpdateTaskRequest
+};
 
 const useStyles = makeStyles(theme => ({
   fields: {
