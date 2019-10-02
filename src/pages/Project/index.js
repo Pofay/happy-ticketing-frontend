@@ -9,18 +9,12 @@ import MenuBar from '../../components/MenuBar';
 import DialogActions from '../../containers/DialogContainer/actions';
 
 import { makeMapStateToProps } from './reducers/selectors';
-import {
-  loadProjectDetails,
-  subscribeToProject,
-  unsubscribeToProject
-} from './actions';
+import { subscribeToProject, unsubscribeToProject } from './actions';
 import ProjectMembers from '../../components/ProjectMembers';
 
 const mapDispatchToProps = dispatch => ({
-  requestLoadProject: (token, projectId) =>
-    dispatch(loadProjectDetails({ token, projectId })),
   openAddTaskDialog: projectId => initialTaskStatus =>
-    dispatch(DialogActions.openAddTaskDialog({ initialTaskStatus, projectId })),
+    dispatch(DialogActions.openAddTaskDialog(projectId, initialTaskStatus)),
   openAddMemberDialog: projectId =>
     dispatch(DialogActions.openAddMemberDialog(projectId)),
   openUpdateTaskDialog: projectId => (
@@ -30,13 +24,13 @@ const mapDispatchToProps = dispatch => ({
     taskId
   ) =>
     dispatch(
-      DialogActions.openUpdateTaskDialog({
+      DialogActions.openUpdateTaskDialog(
+        projectId,
         taskName,
         taskStatus,
         assignedTo,
-        taskId,
-        projectId
-      })
+        taskId
+      )
     ),
   subscribeToChanges: channelName => dispatch(subscribeToProject(channelName)),
   unsubscribeToChanges: () => dispatch(unsubscribeToProject)
