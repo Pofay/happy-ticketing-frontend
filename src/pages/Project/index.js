@@ -13,16 +13,11 @@ import { subscribeToProject, unsubscribeToProject } from './actions';
 import ProjectMembers from '../../components/ProjectMembers';
 
 const mapDispatchToProps = dispatch => ({
-  openAddTaskDialog: projectId => initialTaskStatus =>
+  openAddTaskDialog: (projectId, initialTaskStatus) =>
     dispatch(DialogActions.openAddTaskDialog(projectId, initialTaskStatus)),
   openAddMemberDialog: projectId =>
     dispatch(DialogActions.openAddMemberDialog(projectId)),
-  openUpdateTaskDialog: projectId => (
-    taskName,
-    taskStatus,
-    assignedTo,
-    taskId
-  ) =>
+  openUpdateTaskDialog: (projectId, taskName, taskStatus, assignedTo, taskId) =>
     dispatch(
       DialogActions.openUpdateTaskDialog(
         projectId,
@@ -104,8 +99,8 @@ const Project = props => {
             label={labels[0]}
             projectId={projectId}
             tasks={tasks.filter(t => t.status === labels[0])}
-            onClickAddTask={openAddTaskDialog(projectId)}
-            onClickMore={openUpdateTaskDialog(projectId)}
+            onClickAddTask={openAddTaskDialog}
+            onClickMore={openUpdateTaskDialog}
           />
         </Grid>
         <Grid item xs={4}>
@@ -113,8 +108,8 @@ const Project = props => {
             label={labels[1]}
             projectId={projectId}
             tasks={tasks.filter(t => t.status === labels[1])}
-            onClickAddTask={openAddTaskDialog(projectId)}
-            onClickMore={openUpdateTaskDialog(projectId)}
+            onClickAddTask={openAddTaskDialog}
+            onClickMore={openUpdateTaskDialog}
           />
         </Grid>
         <Grid item xs={4}>
@@ -122,8 +117,8 @@ const Project = props => {
             label={labels[2]}
             projectId={projectId}
             tasks={tasks.filter(t => t.status === labels[2])}
-            onClickAddTask={openAddTaskDialog(projectId)}
-            onClickMore={openUpdateTaskDialog(projectId)}
+            onClickAddTask={openAddTaskDialog}
+            onClickMore={openUpdateTaskDialog}
           />
         </Grid>
       </Grid>
