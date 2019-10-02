@@ -12,24 +12,13 @@ import { makeMapStateToProps } from './reducers/selectors';
 import { subscribeToProject, unsubscribeToProject } from './actions';
 import ProjectMembers from '../../components/ProjectMembers';
 
-const mapDispatchToProps = dispatch => ({
-  openAddTaskDialog: (projectId, initialTaskStatus) =>
-    dispatch(DialogActions.openAddTaskDialog(projectId, initialTaskStatus)),
-  openAddMemberDialog: projectId =>
-    dispatch(DialogActions.openAddMemberDialog(projectId)),
-  openUpdateTaskDialog: (projectId, taskName, taskStatus, assignedTo, taskId) =>
-    dispatch(
-      DialogActions.openUpdateTaskDialog(
-        projectId,
-        taskName,
-        taskStatus,
-        assignedTo,
-        taskId
-      )
-    ),
-  subscribeToChanges: channelName => dispatch(subscribeToProject(channelName)),
-  unsubscribeToChanges: () => dispatch(unsubscribeToProject)
-});
+const mapDispatchToProps = {
+  openAddTaskDialog: DialogActions.openAddTaskDialog,
+  openAddMemberDialog: DialogActions.openAddMemberDialog,
+  openUpdateTaskDialog: DialogActions.openUpdateTaskDialog,
+  subscribeToProject,
+  unsubscribeToProject
+};
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -61,16 +50,16 @@ const Project = props => {
     channelName,
     name,
     tasks,
-    subscribeToChanges,
-    unsubscribeToChanges
+    subscribeToProject,
+    unsubscribeToProject
   } = props;
   const projectId = match.params.id;
 
   const labels = ['TO IMPLEMENT', 'PARTIAL', 'COMPLETE'];
 
   useEffect(() => {
-    subscribeToChanges(channelName);
-    return unsubscribeToChanges;
+    subscribeToProject(channelName);
+    return unsubscribeToProject;
     // eslint-disable-next-line
   }, []);
 
