@@ -1,4 +1,4 @@
-export const submitProjectRequest = data => ({
+export const submitProjectRequest = (token, projectName) => ({
   type: 'SUBMIT_PROJECT_REQUEST',
-  payload: data
+  payload: { token, projectName }
 });

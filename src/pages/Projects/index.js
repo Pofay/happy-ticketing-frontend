@@ -43,7 +43,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   loadAllProjectsRequest: ProjectsPageActions.loadAllProjectsRequest,
-  openAddProjectDialog: DialogContainerActions.openAddProjectDialog
+  openAddProjectDialog: () => DialogContainerActions.openAddProjectDialog
 };
 
 const Projects = props => {
