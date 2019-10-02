@@ -1,4 +1,4 @@
-export const submitTaskRequest = data => ({
+export const submitTaskRequest = (taskName, taskStatus, token, projectId) => ({
   type: 'SUBMIT_TASK_REQUEST',
-  payload: data
+  payload: { taskName, taskStatus, token, projectId }
 });
