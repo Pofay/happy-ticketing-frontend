@@ -16,15 +16,23 @@ import { useAuth0 } from '../../components/auth0-wrapper';
 import DialogContainerActions from './actions';
 
 const mapStateToProps = state => {
+  /*
   const getMembersForProject = projectId => {
     const allMembers = state.members.byId;
+    const projectMembers = state.projects.byId[projectId].members;
+    return projectMembers.map(id => allMembers[id]);
+  };*/
+
+  const getMembersForProject = () => {
+    const allMembers = state.members.byId;
+    const { projectId } = state.openedDialog.dialogData;
     const projectMembers = state.projects.byId[projectId].members;
     return projectMembers.map(id => allMembers[id]);
   };
 
   return {
     dialogData: state.openedDialog.dialogData,
-    members: getMembersForProject
+    members: getMembersForProject()
   };
 };
 
@@ -120,7 +128,7 @@ const UpdateTaskDialog = props => {
             margin="dense"
             fullWidth
           >
-            {members(projectId).map(m => (
+            {members.map(m => (
               <MenuItem key={m.id} value={m.email}>
                 {m.email}
               </MenuItem>
