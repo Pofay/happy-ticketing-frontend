@@ -49,14 +49,22 @@ const Task = props => {
       <Paper className={classes.paper}>
         <Typography variant="h6">{props.name}</Typography>
         <Typography variant="h6">Assigned To: {props.assignedTo}</Typography>
-        <Typography variant="h6">Estimated Time: {props.estimatedTime} Hours</Typography>
+        <Typography variant="h6">
+          Estimated Time: {props.estimatedTime} Hours
+        </Typography>
         <ListItemSecondaryAction>
           <IconButton
             className={classes.more}
             aria-label="settings"
             onClick={event => {
               event.preventDefault();
-              onClickMore(props.name, props.status, props.assignedTo, props.id);
+              onClickMore(
+                props.name,
+                props.status,
+                props.assignedTo,
+                props.estimatedTime,
+                props.id
+              );
             }}
           >
             <MoreVertIcon />
@@ -94,8 +102,8 @@ const TaskList = props => {
     onClickAddTask(projectId, label);
   };
 
-  const handleUpdateTask = (name, status, assignedTo, id) => {
-    onClickMore(projectId, name, status, assignedTo, id);
+  const handleUpdateTask = (name, status, assignedTo, estimatedTime, id) => {
+    onClickMore(projectId, name, status, assignedTo, estimatedTime, id);
   };
 
   return (

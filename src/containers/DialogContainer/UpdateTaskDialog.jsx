@@ -58,6 +58,7 @@ const UpdateTaskDialog = props => {
     taskStatus,
     assignedTo,
     taskId,
+    estimatedTime,
     projectId
   } = props.dialogData;
   const { members } = props;
@@ -65,7 +66,8 @@ const UpdateTaskDialog = props => {
   const [values, setValues] = useState({
     taskName,
     taskStatus,
-    assignedTo
+    assignedTo,
+    estimatedTime
   });
 
   const handleChange = name => event =>
@@ -82,6 +84,7 @@ const UpdateTaskDialog = props => {
       values.taskName,
       values.taskStatus,
       values.assignedTo,
+      values.estimatedTime,
       taskId,
       token,
       projectId
@@ -101,6 +104,15 @@ const UpdateTaskDialog = props => {
           label="Name of Task"
           fullWidth
         ></TextField>
+        <TextField
+          value={values.estimatedTime}
+          onChange={handleChange('estimatedTime')}
+          margin="dense"
+          className={classes.fields}
+          label="Estimated Time in Hours"
+          fullWidth
+        ></TextField>
+
         <FormControl className={classes.fields}>
           <InputLabel>Task Status</InputLabel>
           <Select
