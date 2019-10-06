@@ -15,12 +15,19 @@ const createNewTask = (token, projectId, body) =>
   }).then(r => r.json());
 
 export function* submitTaskRequestSaga(action) {
-  const { taskName, taskStatus, token, projectId } = action.payload;
+  const {
+    taskName,
+    taskStatus,
+    estimatedTime,
+    token,
+    projectId
+  } = action.payload;
 
   yield call(() =>
     createNewTask(token, projectId, {
       name: taskName,
-      status: taskStatus
+      status: taskStatus,
+      estimatedTime
     })
   );
 }

@@ -1,4 +1,10 @@
-export const submitTaskRequest = (taskName, taskStatus, token, projectId) => ({
+export const submitTaskRequest = (
+  taskName,
+  taskStatus,
+  estimatedTime,
+  token,
+  projectId
+) => ({
   type: 'SUBMIT_TASK_REQUEST',
-  payload: { taskName, taskStatus, token, projectId }
+  payload: { taskName, taskStatus, estimatedTime, token, projectId }
 });

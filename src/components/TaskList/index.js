@@ -49,6 +49,7 @@ const Task = props => {
       <Paper className={classes.paper}>
         <Typography variant="h6">{props.name}</Typography>
         <Typography variant="h6">Assigned To: {props.assignedTo}</Typography>
+        <Typography variant="h6">Estimated Time: {props.estimatedTime} Hours</Typography>
         <ListItemSecondaryAction>
           <IconButton
             className={classes.more}
