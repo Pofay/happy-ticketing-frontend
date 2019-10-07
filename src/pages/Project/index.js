@@ -7,6 +7,7 @@ import { withRouter } from 'react-router-dom';
 import TaskList from '../../components/TaskList';
 import MenuBar from '../../components/MenuBar';
 import DialogActions from '../../containers/DialogContainer/actions';
+import submitDeleteTaskRequest from '../globalActions/submitDeleteTaskRequest';
 
 import { makeMapStateToProps } from './reducers/selectors';
 import { subscribeToProject, unsubscribeToProject } from './actions';
@@ -17,7 +18,8 @@ const mapDispatchToProps = {
   openAddMemberDialog: DialogActions.openAddMemberDialog,
   openUpdateTaskDialog: DialogActions.openUpdateTaskDialog,
   subscribeToProject,
-  unsubscribeToProject
+  unsubscribeToProject,
+  submitDeleteTaskRequest
 };
 
 const useStyles = makeStyles(theme => ({
@@ -51,7 +53,8 @@ const Project = props => {
     name,
     tasks,
     subscribeToProject,
-    unsubscribeToProject
+    unsubscribeToProject,
+    submitDeleteTaskRequest
   } = props;
   const projectId = match.params.id;
 
@@ -90,6 +93,7 @@ const Project = props => {
             tasks={tasks.filter(t => t.status === labels[0])}
             onClickAddTask={openAddTaskDialog}
             onClickMore={openUpdateTaskDialog}
+            onClickDelete={submitDeleteTaskRequest}
           />
         </Grid>
         <Grid item xs={4}>
@@ -99,6 +103,7 @@ const Project = props => {
             tasks={tasks.filter(t => t.status === labels[1])}
             onClickAddTask={openAddTaskDialog}
             onClickMore={openUpdateTaskDialog}
+            onClickDelete={submitDeleteTaskRequest}
           />
         </Grid>
         <Grid item xs={4}>
@@ -108,6 +113,7 @@ const Project = props => {
             tasks={tasks.filter(t => t.status === labels[2])}
             onClickAddTask={openAddTaskDialog}
             onClickMore={openUpdateTaskDialog}
+            onClickDelete={submitDeleteTaskRequest}
           />
         </Grid>
       </Grid>

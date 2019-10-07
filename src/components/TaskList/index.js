@@ -11,6 +11,7 @@ import {
 } from '@material-ui/core';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import AddIcon from '@material-ui/icons/Add';
+import { useAuth0 } from '../auth0-wrapper';
 
 const useStyles = makeStyles(theme => ({
   list: {
@@ -42,7 +43,7 @@ const useStyles = makeStyles(theme => ({
 
 const Task = props => {
   const classes = useStyles();
-  const { onClickMore } = props;
+  const { onClickMore, onClickDelete } = props;
 
   return (
     <ListItem key={props.id}>
@@ -52,6 +53,13 @@ const Task = props => {
         <Typography variant="h6">
           Estimated Time: {props.estimatedTime} Hours
         </Typography>
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={event => onClickDelete(props.id)}
+        >
+          Delete
+        </Button>
         <ListItemSecondaryAction>
           <IconButton
             className={classes.more}
@@ -95,7 +103,15 @@ const AddTicketButton = props => {
 // Props: Label, Tasks, OnClickAddTicket, OnClickMoreOptions
 const TaskList = props => {
   const classes = useStyles();
-  const { onClickAddTask, onClickMore, label, tasks, projectId } = props;
+  const {
+    onClickAddTask,
+    onClickMore,
+    onClickDelete,
+    label,
+    tasks,
+    projectId
+  } = props;
+  const { getTokenSilently } = useAuth0();
 
   const handleAddTask = event => {
     event.preventDefault();
@@ -106,12 +122,23 @@ const TaskList = props => {
     onClickMore(projectId, name, status, assignedTo, estimatedTime, id);
   };
 
+  const handleDeleteTask = taskId => {
+    getTokenSilently().then(token =>
+      onClickDelete({ token, projectId, taskId })
+    );
+  };
+
   return (
     <Paper className={classes.container}>
       <Typography variant="h5">{label}</Typography>
       <List className={classes.list}>
         {tasks.map(t => (
-          <Task key={t.id} onClickMore={handleUpdateTask} {...t} />
+          <Task
+            key={t.id}
+            onClickMore={handleUpdateTask}
+            onClickDelete={handleDeleteTask}
+            {...t}
+          />
         ))}
       </List>
       <AddTicketButton onClick={handleAddTask} />

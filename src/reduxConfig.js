@@ -5,7 +5,10 @@ import projectsReducer from './pages/Projects/reducers';
 import tasksReducer from './pages/Project/reducers';
 import dialogContainerReducer from './containers/DialogContainer/reducers';
 import { loadAllProjects } from './pages/Projects/sagas';
-import { initializeSubscriptionToProject } from './pages/Project/sagas';
+import {
+  initializeSubscriptionToProject,
+  submitDeleteTaskRequest
+} from './pages/Project/sagas';
 import DialogContainerSagas from './containers/DialogContainer/sagas';
 import membersReducer from './pages/globalReducers/membersReducer';
 
@@ -35,7 +38,8 @@ function* rootSaga() {
       'SUBMIT_UPDATE_TASK_REQUEST',
       DialogContainerSagas.submitUpdateTaskRequestSaga
     ),
-    takeLatest('SUBSCRIBE_TO_PROJECT', initializeSubscriptionToProject)
+    takeLatest('SUBSCRIBE_TO_PROJECT', initializeSubscriptionToProject),
+    takeLatest('SUBMIT_DELETE_TASK_REQUEST', submitDeleteTaskRequest)
   ]);
 }
 

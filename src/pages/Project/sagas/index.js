@@ -1,4 +1,4 @@
-import { take, put, fork, takeEvery } from 'redux-saga/effects';
+import { take, call, put, fork, takeEvery } from 'redux-saga/effects';
 import { eventChannel } from 'redux-saga';
 import { pipe } from 'ramda';
 import addTask from '../../globalActions/addTask';
@@ -15,10 +15,34 @@ const putMemberToStore = pipe(
   put
 );
 
+const apiUrl = projectId =>
+  `${process.env.REACT_APP_BACKEND_URL}/projects/${projectId}/tasks`;
+
+const deleteTaskInBackend = (token, projectId, body) => {
+  fetch(apiUrl(projectId), {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(body)
+  }).then(r => console.log(r.status));
+};
+
 export function* initializeSubscriptionToProject(action) {
   const channelName = action.payload;
 
   yield fork(subscribeToProjectChanges, channelName);
+}
+
+export function* submitDeleteTaskRequest(action) {
+  const { taskId, projectId, token } = action.payload;
+
+  yield call(() =>
+    deleteTaskInBackend(token, projectId, {
+      id: taskId
+    })
+  );
 }
 
 function* subscribeToProjectChanges(channelName) {

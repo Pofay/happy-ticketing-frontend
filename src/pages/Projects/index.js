@@ -158,7 +158,7 @@ const calculateProgress = tasks => {
   );
   const totalEstimate = tasks.reduce((acc, cur) => acc + cur.estimatedTime, 0);
 
-  return (completedEstimate / totalEstimate) * 100;
+  return Math.floor((completedEstimate / totalEstimate) * 100);
 };
 
 const calculateEstimate = ({ estimatedTime, status }) => {

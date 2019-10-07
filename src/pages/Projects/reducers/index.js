@@ -29,12 +29,24 @@ const concatProjectIdToState = (state, action) => {
   return contains(projectId, state) ? state : state.concat(projectId);
 };
 
+const deleteTaskId = (state, action) => {
+  const { projectId, taskId } = action.payload;
+  const project = state.byId[projectId];
+  const updatedProject = merge(project, {
+    tasks: project.tasks.filter(id => id !== taskId)
+  });
+
+  return merge(state, { [projectId]: updatedProject });
+};
+
 const addProject = (state = {}, action) => {
   switch (action.type) {
     case 'ADD_PROJECT':
       return addProjectToState(state, action);
     case 'ADD_TASK':
       return addTaskId(state, action);
+    case 'DELETE_TASK':
+      return deleteTaskId(state, action);
     case 'ADD_MEMBER':
       return addMemberId(state, action);
     default:

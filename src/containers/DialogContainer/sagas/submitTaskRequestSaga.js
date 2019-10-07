@@ -1,6 +1,5 @@
 import { call } from 'redux-saga/effects';
 import fetch from 'isomorphic-unfetch';
-
 const apiUrl = projectId =>
   `${process.env.REACT_APP_BACKEND_URL}/projects/${projectId}/tasks`;
 
