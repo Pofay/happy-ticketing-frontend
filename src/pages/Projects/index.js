@@ -10,7 +10,8 @@ import {
   Card,
   CardContent,
   Divider,
-  Typography
+  Typography,
+  LinearProgress
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
@@ -32,7 +33,8 @@ const useStyles = makeStyles(theme => ({
     marginRight: '20%'
   },
   card: {
-    width: 750
+    width: 750,
+    height: '20%'
   }
 }));
 
@@ -126,6 +128,16 @@ const Projects = props => {
                         )}
                         statusTitle={'COMPLETE'}
                       />
+                      <br />
+                      <Divider />
+                      <Typography>
+                        Completion {calculateProgress(tasks(p.tasks))}%
+                      </Typography>
+                      <br />
+                      <LinearProgress
+                        variant="determinate"
+                        value={calculateProgress(tasks(p.tasks))}
+                      />
                     </CardContent>
                   </Card>
                 </ListItem>
@@ -136,6 +148,28 @@ const Projects = props => {
       </div>
     </div>
   );
+};
+
+const calculateProgress = tasks => {
+  if (tasks.length === 0) return 0;
+  const completedEstimate = tasks.reduce(
+    (acc, cur) => acc + calculateEstimate(cur),
+    0
+  );
+  const totalEstimate = tasks.reduce((acc, cur) => acc + cur.estimatedTime, 0);
+
+  return (completedEstimate / totalEstimate) * 100;
+};
+
+const calculateEstimate = ({ estimatedTime, status }) => {
+  switch (status) {
+    case 'TO IMPLEMENT':
+      return 0;
+    case 'PARTIAL':
+      return estimatedTime / 2;
+    default:
+      return estimatedTime;
+  }
 };
 export default withRouter(
   connect(
