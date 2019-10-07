@@ -31,7 +31,7 @@ const concatProjectIdToState = (state, action) => {
 
 const deleteTaskId = (state, action) => {
   const { projectId, taskId } = action.payload;
-  const project = state.byId[projectId];
+  const project = state[projectId];
   const updatedProject = merge(project, {
     tasks: project.tasks.filter(id => id !== taskId)
   });

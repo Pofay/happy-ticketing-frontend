@@ -3,6 +3,7 @@ import { eventChannel } from 'redux-saga';
 import { pipe } from 'ramda';
 import addTask from '../../globalActions/addTask';
 import addMember from '../../globalActions/addMember';
+import deleteTask from '../../globalActions/deleteTask';
 import PusherService from '../services/pusherService';
 
 const putTaskToStore = pipe(
@@ -12,6 +13,11 @@ const putTaskToStore = pipe(
 
 const putMemberToStore = pipe(
   addMember,
+  put
+);
+
+const deleteTaskInStore = pipe(
+  deleteTask,
   put
 );
 
@@ -59,6 +65,9 @@ function* subscribeToProjectChanges(channelName) {
       case 'task-updated':
         yield putTaskToStore(action.payload);
         break;
+      case 'task-deleted':
+        yield deleteTaskInStore(action.payload);
+        break;
       default:
         break;
     }
@@ -93,10 +102,18 @@ const createProjectChangesChannel = channelName => {
       })
     );
 
+    channel.bind('task-deleted', data =>
+      emitter({
+        type: 'task-deleted',
+        payload: data
+      })
+    );
+
     return () => {
       channel.unbind('task-added');
       channel.unbind('task-updated');
       channel.unbind('member-added');
+      channel.unbind('task-deleted');
       PusherService.unsubscribe();
     };
   });
