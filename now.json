@@ -1,0 +1,12 @@
+{
+  "build": {
+    "env": {
+      "REACT_APP_DOMAIN": "@react_app_domain",
+      "REACT_APP_AUDIENCE": "@react_app_audience",
+      "REACT_APP_CLIENT_ID": "@react_app_client_id",
+      "REACT_APP_BACKEND_URL": "@react_app_backend_url",
+      "REACT_APP_PROD_PUSHER_KEY": "@react_app_prod_pusher_key",
+      "REACT_APP_PROD_PUSHER_CLUSTER": "@react_app_prod_pusher_cluster"
+    }
+  }
+}

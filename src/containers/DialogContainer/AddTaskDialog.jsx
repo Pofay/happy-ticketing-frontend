@@ -39,7 +39,8 @@ const AddTaskDialog = props => {
   const { initialTaskStatus, projectId } = props.dialogData;
   const [values, setValues] = useState({
     taskName: '',
-    taskStatus: initialTaskStatus
+    taskStatus: initialTaskStatus,
+    estimatedTime: 0
   });
 
   const handleChange = name => event =>
@@ -52,7 +53,13 @@ const AddTaskDialog = props => {
 
   const handleSubmit = async event => {
     const token = await getTokenSilently();
-    props.submitTask(values.taskName, values.taskStatus, token, projectId);
+    props.submitTask(
+      values.taskName,
+      values.taskStatus,
+      values.estimatedTime,
+      token,
+      projectId
+    );
     handleClose(event);
   };
 
@@ -66,6 +73,14 @@ const AddTaskDialog = props => {
           margin="dense"
           className={classes.fields}
           label="Name of Task"
+          fullWidth
+        ></TextField>
+        <TextField
+          value={values.estimatedTime}
+          onChange={handleChange('estimatedTime')}
+          margin="dense"
+          className={classes.fields}
+          label="Estimated Time in Hours"
           fullWidth
         ></TextField>
         <FormControl className={classes.fields}>

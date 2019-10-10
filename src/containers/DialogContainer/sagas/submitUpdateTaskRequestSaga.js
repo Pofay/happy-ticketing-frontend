@@ -19,6 +19,7 @@ export function* submitUpdateTaskRequestSaga(action) {
     taskName,
     taskStatus,
     assignedTo,
+    estimatedTime,
     taskId,
     token,
     projectId
@@ -29,6 +30,7 @@ export function* submitUpdateTaskRequestSaga(action) {
       id: taskId,
       name: taskName,
       status: taskStatus,
+      estimatedTime,
       assignedTo
     })
   );

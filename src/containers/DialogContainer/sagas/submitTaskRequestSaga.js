@@ -1,6 +1,5 @@
 import { call } from 'redux-saga/effects';
 import fetch from 'isomorphic-unfetch';
-
 const apiUrl = projectId =>
   `${process.env.REACT_APP_BACKEND_URL}/projects/${projectId}/tasks`;
 
@@ -15,12 +14,19 @@ const createNewTask = (token, projectId, body) =>
   }).then(r => r.json());
 
 export function* submitTaskRequestSaga(action) {
-  const { taskName, taskStatus, token, projectId } = action.payload;
+  const {
+    taskName,
+    taskStatus,
+    estimatedTime,
+    token,
+    projectId
+  } = action.payload;
 
   yield call(() =>
     createNewTask(token, projectId, {
       name: taskName,
-      status: taskStatus
+      status: taskStatus,
+      estimatedTime
     })
   );
 }

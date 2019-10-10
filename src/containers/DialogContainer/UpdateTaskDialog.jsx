@@ -16,15 +16,23 @@ import { useAuth0 } from '../../components/auth0-wrapper';
 import DialogContainerActions from './actions';
 
 const mapStateToProps = state => {
+  /*
   const getMembersForProject = projectId => {
     const allMembers = state.members.byId;
+    const projectMembers = state.projects.byId[projectId].members;
+    return projectMembers.map(id => allMembers[id]);
+  };*/
+
+  const getMembersForProject = () => {
+    const allMembers = state.members.byId;
+    const { projectId } = state.openedDialog.dialogData;
     const projectMembers = state.projects.byId[projectId].members;
     return projectMembers.map(id => allMembers[id]);
   };
 
   return {
     dialogData: state.openedDialog.dialogData,
-    members: getMembersForProject
+    members: getMembersForProject()
   };
 };
 
@@ -50,6 +58,7 @@ const UpdateTaskDialog = props => {
     taskStatus,
     assignedTo,
     taskId,
+    estimatedTime,
     projectId
   } = props.dialogData;
   const { members } = props;
@@ -57,7 +66,8 @@ const UpdateTaskDialog = props => {
   const [values, setValues] = useState({
     taskName,
     taskStatus,
-    assignedTo
+    assignedTo,
+    estimatedTime
   });
 
   const handleChange = name => event =>
@@ -74,6 +84,7 @@ const UpdateTaskDialog = props => {
       values.taskName,
       values.taskStatus,
       values.assignedTo,
+      values.estimatedTime,
       taskId,
       token,
       projectId
@@ -93,6 +104,15 @@ const UpdateTaskDialog = props => {
           label="Name of Task"
           fullWidth
         ></TextField>
+        <TextField
+          value={values.estimatedTime}
+          onChange={handleChange('estimatedTime')}
+          margin="dense"
+          className={classes.fields}
+          label="Estimated Time in Hours"
+          fullWidth
+        ></TextField>
+
         <FormControl className={classes.fields}>
           <InputLabel>Task Status</InputLabel>
           <Select
@@ -120,7 +140,7 @@ const UpdateTaskDialog = props => {
             margin="dense"
             fullWidth
           >
-            {members(projectId).map(m => (
+            {members.map(m => (
               <MenuItem key={m.id} value={m.email}>
                 {m.email}
               </MenuItem>
